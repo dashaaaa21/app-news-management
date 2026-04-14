@@ -212,6 +212,7 @@ const MyProfile: React.FC = () => {
                         <div className="block lg:hidden mt-6">
                             <ProfileFormActions
                                 onSave={handleSave}
+                                onCancel={handleCancel}
                                 isLoading={isUpdating}
                             />
                         </div>
@@ -230,6 +231,7 @@ const MyProfile: React.FC = () => {
                 <div className="hidden lg:block">
                     <ProfileFormActions
                         onSave={handleSave}
+                        onCancel={handleCancel}
                         isLoading={isUpdating}
                     />
                 </div>
@@ -239,3 +241,4 @@ const MyProfile: React.FC = () => {
 };
 
 export default MyProfile;
+
