@@ -1,6 +1,5 @@
-import React from 'react';
 import { StatTable } from '../StatTable/StatTable';
-import { StatTableData } from './useStatTableData';
+import type { StatTableData } from './useStatTableData';
 
 interface StatTableCellProps {
     loading: boolean;
