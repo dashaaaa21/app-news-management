@@ -1,4 +1,4 @@
-import shopImg from '../../assets/Shop.svg';
+import shopImg from '../../../assets/Shop.svg';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 type Props = {

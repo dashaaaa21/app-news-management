@@ -1,5 +1,5 @@
 import React, { useRef, useState, Fragment } from 'react';
-import logo from '../../assets/icons/chart-logo.svg';
+import logo from '../../../assets/icons/chart-logo.svg';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';
 

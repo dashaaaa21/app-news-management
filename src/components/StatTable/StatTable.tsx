@@ -1,5 +1,5 @@
 import React from 'react';
-import Zap from '../../assets/Zap.svg';
+import Zap from '../../../assets/Zap.svg';
 import { useState, Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDown } from 'lucide-react';

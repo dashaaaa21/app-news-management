@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ChangeEvent } from 'react';
-import userIcon from '../../assets/icons/login-user.svg';
+import userIcon from '../../../assets/icons/login-user.svg';
 
 interface ForgotPasswordInputProps {
     email: string;
