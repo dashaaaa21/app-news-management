@@ -65,9 +65,9 @@ export default function UsersTable({
                             isManager={isManager || !isAdmin}
                         />
                         <tbody>
-                            {users.map((user) => (
+                            {users.map((user, index) => (
                                 <UserTableRow
-                                    key={user.id}
+                                    key={`${(user as any)._id || user.id}-${index}`}
                                     user={user}
                                     isSelected={selectedUsers.includes(user.id)}
                                     onSelect={handleSelectUser}
@@ -92,4 +92,3 @@ export default function UsersTable({
         </>
     );
 }
-

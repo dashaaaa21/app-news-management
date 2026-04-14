@@ -87,7 +87,7 @@ export default function TopicsNews({ totalOrders }: Props) {
             <div className="mt-6 md:mt-8 space-y-2 md:space-y-3">
                 {topics.map((t, idx) => (
                     <div
-                        key={idx}
+                        key={`topic-${idx}-${t.name}`}
                         className="flex items-center justify-between gap-2"
                     >
                         <div className="flex items-center gap-2 md:gap-3 min-w-0">

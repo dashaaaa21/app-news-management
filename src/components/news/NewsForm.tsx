@@ -14,9 +14,9 @@ export const NewsForm: React.FC<INewsFormProps> = ({
     const initialFormData = useMemo((): ICreateNewsRequest => {
         if (news) {
             return {
-                title: news.title,
-                body: news.body,
-                author: news.author,
+                title: news.title || '',
+                body: news.body || '',
+                author: news.author || '',
             };
         }
         return {
@@ -29,10 +29,15 @@ export const NewsForm: React.FC<INewsFormProps> = ({
     const [formData, setFormData] =
         useState<ICreateNewsRequest>(initialFormData);
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [photoPreview, setPhotoPreview] = useState<string>(news?.image || '');
+    const [photoFile, setPhotoFile] = useState<File | null>(null);
 
     useEffect(() => {
         setFormData(initialFormData);
-    }, [initialFormData]);
+        if (news?.image) {
+            setPhotoPreview(news.image);
+        }
+    }, [initialFormData, news]);
 
     const validateForm = (): boolean => {
         const newErrors: Record<string, string> = {};
@@ -44,9 +49,9 @@ export const NewsForm: React.FC<INewsFormProps> = ({
         }
 
         if (!formData.body.trim()) {
-            newErrors.body = 'Body is required';
+            newErrors.body = 'Content is required';
         } else if (formData.body.trim().length < 20) {
-            newErrors.body = 'Body must be at least 20 characters';
+            newErrors.body = 'Content must be at least 20 characters';
         }
 
         if (!formData.author.trim()) {
@@ -59,6 +64,40 @@ export const NewsForm: React.FC<INewsFormProps> = ({
         return Object.keys(newErrors).length === 0;
     };
 
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                setErrors((prev) => ({
+                    ...prev,
+                    photo: 'Photo size must be less than 5MB',
+                }));
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                setErrors((prev) => ({
+                    ...prev,
+                    photo: 'Please select a valid image file',
+                }));
+                return;
+            }
+
+            setPhotoFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPhotoPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+
+            setErrors((prev) => {
+                const newErrors = { ...prev };
+                delete newErrors.photo;
+                return newErrors;
+            });
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -66,9 +105,16 @@ export const NewsForm: React.FC<INewsFormProps> = ({
             return;
         }
 
-        const success = await onSubmit(formData);
+        const dataToSubmit: ICreateNewsRequest = {
+            ...formData,
+            image: photoFile || undefined,
+        };
+
+        const success = await onSubmit(dataToSubmit);
         if (success) {
             setFormData({ title: '', body: '', author: '' });
+            setPhotoPreview('');
+            setPhotoFile(null);
             setErrors({});
         }
     };
@@ -85,16 +131,16 @@ export const NewsForm: React.FC<INewsFormProps> = ({
     };
 
     return (
-        <div className="bg-transparent rounded-[16px] sm:rounded-[20px] border border-black/10 p-4 sm:p-6 mb-4 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-                {news ? 'Edit News' : 'Create New News'}
+        <div className="bg-white rounded-[20px] border border-gray-200 p-6 mb-6">
+            <h2 className="text-2xl font-bold mb-6">
+                {news ? 'Edit Article' : 'Create New Article'}
             </h2>
 
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label
                         htmlFor="title"
-                        className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 mb-2"
                     >
                         Title
                     </label>
@@ -105,13 +151,13 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                         value={formData.title}
                         onChange={handleInputChange}
                         disabled={isLoading}
-                        className={`w-full px-3 py-2 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] text-sm sm:text-base ${
+                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] ${
                             errors.title ? 'border-red-500' : 'border-gray-300'
                         }`}
-                        placeholder="Enter news title"
+                        placeholder="Enter article title"
                     />
                     {errors.title && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        <p className="text-red-500 text-sm mt-1">
                             {errors.title}
                         </p>
                     )}
@@ -120,7 +166,7 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                 <div>
                     <label
                         htmlFor="author"
-                        className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 mb-2"
                     >
                         Author
                     </label>
@@ -131,22 +177,71 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                         value={formData.author}
                         onChange={handleInputChange}
                         disabled={isLoading}
-                        className={`w-full px-3 py-2 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] text-sm sm:text-base ${
+                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] ${
                             errors.author ? 'border-red-500' : 'border-gray-300'
                         }`}
                         placeholder="Enter author name"
                     />
                     {errors.author && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        <p className="text-red-500 text-sm mt-1">
                             {errors.author}
                         </p>
                     )}
                 </div>
 
                 <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Article Photo
+                    </label>
+                    <div className="space-y-3">
+                        {photoPreview && (
+                            <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
+                                <img
+                                    src={photoPreview}
+                                    alt="Preview"
+                                    className="w-full h-full object-cover"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setPhotoPreview('');
+                                        setPhotoFile(null);
+                                    }}
+                                    className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                        )}
+                        <label className="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-gray-400 transition-colors">
+                            <div className="text-center">
+                                <p className="text-sm font-medium text-gray-700">
+                                    Click to upload photo
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                    PNG, JPG, GIF up to 5MB
+                                </p>
+                            </div>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handlePhotoChange}
+                                disabled={isLoading}
+                                className="hidden"
+                            />
+                        </label>
+                        {errors.photo && (
+                            <p className="text-red-500 text-sm">
+                                {errors.photo}
+                            </p>
+                        )}
+                    </div>
+                </div>
+
+                <div>
                     <label
                         htmlFor="body"
-                        className="block text-xs sm:text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 mb-2"
                     >
                         Content
                     </label>
@@ -156,38 +251,38 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                         value={formData.body}
                         onChange={handleInputChange}
                         disabled={isLoading}
-                        rows={6}
-                        className={`w-full px-3 py-2 border rounded-[12px] focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] resize-vertical text-sm sm:text-base ${
+                        rows={8}
+                        className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#CEFF7D] resize-vertical ${
                             errors.body ? 'border-red-500' : 'border-gray-300'
                         }`}
-                        placeholder="Enter news content"
+                        placeholder="Enter article content (plain text only)"
                     />
                     {errors.body && (
-                        <p className="text-red-500 text-xs sm:text-sm mt-1">
+                        <p className="text-red-500 text-sm mt-1">
                             {errors.body}
                         </p>
                     )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-3 sm:pt-4">
+                <div className="flex gap-3 pt-4">
                     <Button
                         type="submit"
                         variant="primary"
                         disabled={isLoading}
-                        className="w-full sm:w-auto text-sm sm:text-base"
+                        className="rounded-[20px]"
                     >
                         {isLoading
                             ? 'Saving...'
                             : news
-                              ? 'Update News'
-                              : 'Create News'}
+                              ? 'Update Article'
+                              : 'Create Article'}
                     </Button>
                     <Button
                         type="button"
                         variant="secondary"
                         onClick={onCancel}
                         disabled={isLoading}
-                        className="w-full sm:w-auto text-sm sm:text-base"
+                        className="rounded-[20px]"
                     >
                         Cancel
                     </Button>

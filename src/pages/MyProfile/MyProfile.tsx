@@ -11,7 +11,6 @@ import {
     saveProfileToStorage,
     getProfileFromStorage,
 } from '../../common/utils/profileStorage';
-import { getServerUrl } from '../../common/utils/apiConfig';
 
 const MyProfile: React.FC = () => {
     const navigate = useNavigate();
@@ -40,87 +39,54 @@ const MyProfile: React.FC = () => {
     useEffect(() => {
         const loadUserData = () => {
             try {
-                const storedProfile = getProfileFromStorage();
+                const token = getAccessToken();
+                if (token) {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
 
-                if (storedProfile) {
+                    const profileData = {
+                        firstName: payload.firstName || '',
+                        lastName: payload.lastName || '',
+                        email: payload.email || '',
+                        gender: payload.gender || 'female',
+                        dateOfBirth: payload.dateOfBirth
+                            ? payload.dateOfBirth.split('T')[0]
+                            : '',
+                        position: payload.position || '',
+                        hireDate: payload.hireDate
+                            ? payload.hireDate.split('T')[0]
+                            : '',
+                        phone: payload.phone || '',
+                        bio: payload.bio || '',
+                        role: payload.role?.toLowerCase() || 'user',
+                        profilePicture: '',
+                    };
+
                     setFormData({
-                        firstName: storedProfile.firstName || '',
-                        lastName: storedProfile.lastName || '',
-                        email: storedProfile.email || '',
-                        gender:
-                            (storedProfile.gender as
-                                | 'male'
-                                | 'female'
-                                | 'other') || 'female',
-                        dateOfBirth: storedProfile.dateOfBirth
-                            ? storedProfile.dateOfBirth.split('T')[0]
-                            : '',
-                        position: storedProfile.position || '',
-                        hireDate: storedProfile.hireDate
-                            ? storedProfile.hireDate.split('T')[0]
-                            : '',
-                        phone: storedProfile.phone || '',
-                        bio: storedProfile.bio || '',
-                        role:
-                            (storedProfile.role?.toLowerCase() as
-                                | 'admin'
-                                | 'user'
-                                | 'manager') || 'user',
+                        firstName: profileData.firstName,
+                        lastName: profileData.lastName,
+                        email: profileData.email,
+                        gender: profileData.gender as
+                            | 'male'
+                            | 'female'
+                            | 'other',
+                        dateOfBirth: profileData.dateOfBirth,
+                        position: profileData.position,
+                        hireDate: profileData.hireDate,
+                        phone: profileData.phone,
+                        bio: profileData.bio,
+                        role: profileData.role as 'admin' | 'user' | 'manager',
                     });
 
-                    if (storedProfile.profilePicture) {
+                    const storedProfile = getProfileFromStorage();
+                    if (storedProfile?.profilePicture) {
                         setProfilePhoto(storedProfile.profilePicture);
                     }
-                } else {
-                    const token = getAccessToken();
-                    if (token) {
-                        const payload = JSON.parse(atob(token.split('.')[1]));
 
-                        const profileData = {
-                            firstName: payload.firstName || '',
-                            lastName: payload.lastName || '',
-                            email: payload.email || '',
-                            gender: payload.gender || 'female',
-                            dateOfBirth: payload.dateOfBirth
-                                ? payload.dateOfBirth.split('T')[0]
-                                : '',
-                            position: payload.position || '',
-                            hireDate: payload.hireDate
-                                ? payload.hireDate.split('T')[0]
-                                : '',
-                            phone: payload.phone || '',
-                            bio: payload.bio || '',
-                            role: payload.role?.toLowerCase() || 'user',
-                            profilePicture: payload.profilePicture
-                                ? getServerUrl(payload.profilePicture)
-                                : '',
-                        };
-
-                        setFormData({
-                            firstName: profileData.firstName,
-                            lastName: profileData.lastName,
-                            email: profileData.email,
-                            gender: profileData.gender as
-                                | 'male'
-                                | 'female'
-                                | 'other',
-                            dateOfBirth: profileData.dateOfBirth,
-                            position: profileData.position,
-                            hireDate: profileData.hireDate,
-                            phone: profileData.phone,
-                            bio: profileData.bio,
-                            role: profileData.role as
-                                | 'admin'
-                                | 'user'
-                                | 'manager',
-                        });
-
-                        if (profileData.profilePicture) {
-                            setProfilePhoto(profileData.profilePicture);
-                        }
-
-                        saveProfileToStorage(profileData);
-                    }
+                    const profileToSave = {
+                        ...profileData,
+                        profilePicture: storedProfile?.profilePicture || '',
+                    };
+                    saveProfileToStorage(profileToSave);
                 }
             } catch {
             } finally {
@@ -162,14 +128,17 @@ const MyProfile: React.FC = () => {
         }
 
         try {
-            await updateProfile(formData);
-
-            const updatedProfile = {
+            const profileDataWithPhoto = {
                 ...formData,
                 profilePicture: profilePhoto,
             };
 
-            saveProfileToStorage(updatedProfile);
+            await updateProfile(profileDataWithPhoto);
+
+            // Зберігаємо профіль з фото в localStorage
+            saveProfileToStorage(profileDataWithPhoto);
+
+            window.dispatchEvent(new Event('profileUpdated'));
 
             alert('Profile updated successfully!');
         } catch {
@@ -241,4 +210,3 @@ const MyProfile: React.FC = () => {
 };
 
 export default MyProfile;
-

@@ -25,7 +25,7 @@ export default function NewsDetailContent({
         <div className="space-y-3 md:space-y-4 text-sm md:text-base leading-relaxed">
             {paragraphs.map((paragraph, index) => (
                 <p
-                    key={index}
+                    key={`paragraph-${index}-${paragraph.substring(0, 20)}`}
                     className={
                         index === 0
                             ? 'first-letter:text-4xl md:first-letter:text-5xl lg:first-letter:text-6xl first-letter:font-bold first-letter:float-left first-letter:mr-2 md:first-letter:mr-3 first-letter:leading-none'

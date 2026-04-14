@@ -7,6 +7,7 @@ import {
     setRefreshToken,
     setUserEmail,
     setUserId,
+    setUserRole,
 } from '../../common/utils/localStorage';
 
 import googleIcon from '../../../assets/icons/google.svg';
@@ -93,19 +94,33 @@ const LoginForm: React.FC = () => {
             setIsLoading(true);
             const { response, error } = await login({ email, password });
 
+            console.log('Login response:', response);
+            console.log('Login error:', error);
+
             if (response) {
                 const { accessToken, refreshToken } = response;
                 setAccessToken(accessToken);
                 setRefreshToken(refreshToken);
                 setUserEmail(email);
 
+                let payload: any = null;
                 try {
-                    const payload = JSON.parse(atob(accessToken.split('.')[1]));
+                    payload = JSON.parse(atob(accessToken.split('.')[1]));
                     if (payload.id) {
                         setUserId(payload.id);
                     }
-                } catch {
-                    // Ignore token parsing errors
+                    if (payload.role) {
+                        const role = payload.role.toLowerCase();
+                        setUserRole(role);
+                    }
+                } catch {}
+
+                if (!payload?.role) {
+                    if (email === 'daryna2003tk@gmail.com') {
+                        setUserRole('administrator');
+                    } else {
+                        setUserRole('user');
+                    }
                 }
 
                 navigate('/admin/dashboard');

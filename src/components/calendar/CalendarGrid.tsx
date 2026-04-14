@@ -81,7 +81,7 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
             <div className="grid grid-cols-7 gap-2">
                 {days.map((day, index) => (
                     <CalendarDay
-                        key={index}
+                        key={`${year}-${month}-${day}-${index}`}
                         day={day}
                         isSelected={day ? isSelected(day) : false}
                         isToday={day ? isToday(day) : false}
@@ -99,4 +99,3 @@ const CalendarGrid: React.FC<CalendarGridProps> = ({
 };
 
 export default CalendarGrid;
-

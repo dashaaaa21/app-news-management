@@ -18,12 +18,10 @@ export default function NewsDetail() {
     const [news, setNews] = useState<INews | null>(null);
     const [loading, setLoading] = useState(true);
     const isEditMode = location.pathname.includes('/edit');
-    const [title, setTitle] = useState(MOCK_NEWS_DETAIL.title);
-    const [heroDescription, setHeroDescription] = useState(
-        MOCK_NEWS_DETAIL.heroDescription,
-    );
-    const [content1, setContent1] = useState(MOCK_NEWS_DETAIL.content1);
-    const [content2, setContent2] = useState(MOCK_NEWS_DETAIL.content2);
+    const [title, setTitle] = useState('');
+    const [heroDescription, setHeroDescription] = useState('');
+    const [content1, setContent1] = useState('');
+    const [content2, setContent2] = useState('');
     const [relatedNews, setRelatedNews] = useState(
         MOCK_NEWS_DETAIL.relatedNews,
     );
@@ -43,6 +41,15 @@ export default function NewsDetail() {
             setLoading(true);
             const data = await getNewsByIdLegacy(Number(id));
             setNews(data || null);
+
+            if (data) {
+                setTitle(data.title || '');
+                setHeroDescription(data.body || '');
+                const bodyParts = (data.body || '').split('\n\n');
+                setContent1(bodyParts[0] || data.body || '');
+                setContent2(bodyParts[1] || data.body || '');
+            }
+
             setLoading(false);
         };
 

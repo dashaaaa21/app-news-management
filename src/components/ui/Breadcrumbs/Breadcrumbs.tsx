@@ -13,7 +13,10 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
     return (
         <div className="flex items-center gap-2 text-sm mb-6">
             {items.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
+                <div
+                    key={`breadcrumb-${index}-${item.label}`}
+                    className="flex items-center gap-2"
+                >
                     {item.path ? (
                         <Link
                             to={item.path}

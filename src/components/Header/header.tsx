@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getProfileFromStorage } from '../../common/utils/profileStorage';
+import { getAccessToken } from '../../common/utils/localStorage';
+import { getServerUrl } from '../../common/utils/apiConfig';
 
 interface HeaderProps {
     title?: string;
@@ -37,13 +39,31 @@ export default function Header({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
-    const [avatarUrl] = useState(() => {
-        const profile = getProfileFromStorage();
-        return (
-            profile?.profilePicture ||
-            'https://api.dicebear.com/7.x/avataaars/svg?seed=User&backgroundColor=b6e3f4'
-        );
-    });
+    const [avatarUrl, setAvatarUrl] = useState<string>('');
+
+    useEffect(() => {
+        const updateAvatar = () => {
+            try {
+                const profile = getProfileFromStorage();
+                if (profile?.profilePicture) {
+                    setAvatarUrl(profile.profilePicture);
+                } else {
+                    setAvatarUrl('');
+                }
+            } catch {
+                setAvatarUrl('');
+            }
+        };
+
+        updateAvatar();
+
+        const handleProfileUpdate = () => updateAvatar();
+        window.addEventListener('profileUpdated', handleProfileUpdate);
+
+        return () => {
+            window.removeEventListener('profileUpdated', handleProfileUpdate);
+        };
+    }, []);
 
     const searchRef = useRef<HTMLDivElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -257,11 +277,13 @@ export default function Header({
                             }}
                             className="flex items-center h-10 gap-1.5 p-1 pr-3 rounded-full bg-[#E8EAE6] hover:bg-[#D5D8D2] transition-colors text-gray-500"
                         >
-                            <img
-                                src={avatarUrl}
-                                alt="User avatar"
-                                className="w-8 h-8 rounded-full object-cover"
-                            />
+                            {avatarUrl && (
+                                <img
+                                    src={avatarUrl}
+                                    alt="User avatar"
+                                    className="w-8 h-8 rounded-full object-cover"
+                                />
+                            )}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="14"
@@ -309,4 +331,3 @@ export default function Header({
         </header>
     );
 }
-

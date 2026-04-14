@@ -39,7 +39,8 @@ export const usePhotoUpload = (): IUsePhotoUploadReturn => {
                 ? response.url
                 : getServerUrl(response.url);
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Upload failed';
+            const errorMessage =
+                err instanceof Error ? err.message : 'Upload failed';
             setError(errorMessage);
             throw err;
         } finally {

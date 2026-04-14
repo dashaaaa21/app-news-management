@@ -6,7 +6,7 @@ interface NewsDetailHeroProps {
     onDescriptionChange: (description: string) => void;
 }
 
-const COSMOS_IMAGE = '/src/assets/section-news1-cosmos/news-cosmos.png';
+const COSMOS_IMAGE = '/assets/section-news1-cosmos/news-cosmos.png';
 
 export default function NewsDetailHero({
     title,
@@ -54,7 +54,7 @@ export default function NewsDetailHero({
                         <div className="space-y-3 md:space-y-4 text-sm md:text-base leading-relaxed">
                             {paragraphs.map((paragraph, index) => (
                                 <p
-                                    key={index}
+                                    key={`hero-paragraph-${index}-${paragraph.substring(0, 20)}`}
                                     className={
                                         index === 0
                                             ? 'first-letter:text-4xl md:first-letter:text-5xl lg:first-letter:text-6xl first-letter:font-bold first-letter:float-left first-letter:mr-2 md:first-letter:mr-3 first-letter:leading-none'
