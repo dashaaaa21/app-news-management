@@ -1,5 +1,5 @@
 import { Button } from '../../components/ui/buttons/Button';
-import robotImg from '../../assets/robot-404.png';
+import robotImg from '../../../assets/robot-404.png';
 
 export default function NotFound() {
     return (

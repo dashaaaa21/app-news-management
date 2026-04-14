@@ -3,13 +3,13 @@ import type { ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../api/api-user/api-user';
 
-import googleIcon from '../../assets/icons/google.svg';
-import fbIcon from '../../assets/icons/facebook.svg';
-import appleIcon from '../../assets/icons/apple.svg';
-import lockIcon from '../../assets/icons/lock.svg';
-import userIcon from '../../assets/icons/login-user.svg';
-import eyeClosedIcon from '../../assets/icons/eye-closed.svg';
-import eyeOpenIcon from '../../assets/icons/eye-open.svg';
+import googleIcon from '../../../assets/icons/google.svg';
+import fbIcon from '../../../assets/icons/facebook.svg';
+import appleIcon from '../../../assets/icons/apple.svg';
+import lockIcon from '../../../assets/icons/lock.svg';
+import userIcon from '../../../assets/icons/login-user.svg';
+import eyeClosedIcon from '../../../assets/icons/eye-closed.svg';
+import eyeOpenIcon from '../../../assets/icons/eye-open.svg';
 
 const RegisterForm: React.FC = () => {
     const navigate = useNavigate();

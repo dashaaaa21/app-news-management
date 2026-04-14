@@ -1,5 +1,5 @@
 import { Button } from '../../components/ui/buttons/Button';
-import robotImg from '../../assets/robot-access.png';
+import robotImg from '../../../assets/robot-access.png';
 
 export default function AccessDenied() {
     return (
