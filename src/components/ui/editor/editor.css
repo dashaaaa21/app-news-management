@@ -1,0 +1,63 @@
+.ProseMirror {
+    outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: #adb5bd;
+    pointer-events: none;
+    height: 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+    padding: 0 1rem;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+}
+
+.ProseMirror h1,
+.ProseMirror h2 {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ProseMirror h1 {
+    font-size: 1.4rem;
+}
+
+.ProseMirror h2 {
+    font-size: 1.2rem;
+}
+
+.ProseMirror h3 {
+    font-size: 1.1rem;
+}
+
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+    font-size: 1rem;
+}
+
+.ProseMirror blockquote {
+    border-left: 3px solid #0d0d0d;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+}
+
+.ProseMirror hr {
+    border: none;
+    border-top: 1px solid #0d0d0d;
+    margin: 2rem 0;
+}
