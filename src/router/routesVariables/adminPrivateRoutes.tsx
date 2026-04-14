@@ -8,6 +8,7 @@ import MyProfile from '../../pages/MyProfile/MyProfile';
 import News from '../../pages/News/News';
 import NewsDetail from '../../pages/NewsDetail/NewsDetail';
 import Dashboard from '../../components/Dashboard/Dashboard';
+import Calendar from '../../pages/Calendar/Calendar';
 
 export const adminPrivateRoutes: RouteObject[] = [
     {
@@ -48,6 +49,7 @@ export const adminPrivateRoutes: RouteObject[] = [
     },
     {
         path: adminPrivateRoutesVariables.calendar,
-        element: <div>Calendar</div>,
+        element: <Calendar />,
     },
 ];
+
