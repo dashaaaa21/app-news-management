@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import type { IUserFormData } from '../../../common/types/user-type.ts';
-import { getUserById, updateUser } from '../../../api/api-user/api-user.ts';
+import { getUserById, updateUserById } from '../../../api/api-user/api-user.ts';
 import { adminPrivateRoutesVariables } from '../../../router/routesVariables/pathVariables';
 import Breadcrumbs from '../../ui/Breadcrumbs/Breadcrumbs';
 import UserFormHeader from '../../userForm/UserFormHeader.tsx';
@@ -29,8 +29,9 @@ export default function EditUser() {
         const loadUserData = async () => {
             if (id) {
                 setLoading(true);
-                const user = await getUserById(Number(id));
-                if (user) {
+                const result = await getUserById(id);
+                if (result.response) {
+                    const user = result.response;
                     setUserName(`${user.firstName} ${user.lastName}`);
                     setFormData({
                         firstName: user.firstName,
@@ -54,9 +55,13 @@ export default function EditUser() {
     const handleSave = async () => {
         if (id) {
             try {
-                await updateUser(Number(id), formData);
-                alert('User updated successfully!');
-                navigate(-1);
+                const result = await updateUserById(id, formData);
+                if (result.response) {
+                    alert('User updated successfully!');
+                    navigate(-1);
+                } else if (result.error) {
+                    alert('Error updating user: ' + result.error.message);
+                }
             } catch (error) {
                 alert('Error updating user');
                 console.error(error);

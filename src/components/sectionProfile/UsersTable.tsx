@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetUsers, useDeleteUser } from '../../common/hooks/useUsersCrud';
+import { useGetUsers } from '../../common/hooks/useUsersCrud';
 import { getUserRole } from '../../common/utils/localStorage';
 import type { IUser } from '../../common/types/user-type';
 import UsersTableHeader from './UsersTableHeader';
@@ -10,18 +10,15 @@ import LoadingState from './LoadingState';
 interface UsersTableProps {
     selectedUsers: number[];
     onSelectedUsersChange: (users: number[]) => void;
-    refreshTrigger?: number;
     isManager?: boolean;
 }
 
 export default function UsersTable({
     selectedUsers,
     onSelectedUsersChange,
-    refreshTrigger,
     isManager = false,
 }: UsersTableProps) {
     const { data: users = [], isLoading, refetch } = useGetUsers();
-    const deleteUserMutation = useDeleteUser();
     const userRole = getUserRole();
     const isAdmin = userRole === 'administrator';
     const [selectedUserForModal, setSelectedUserForModal] =

@@ -8,7 +8,7 @@ export default function EditUser() {
     const navigate = useNavigate();
     const { id } = useParams<{ id: string }>();
     const userRole = getUserRole();
-    const { data: user, isLoading } = useGetUserById(id || '');
+    const { data: user } = useGetUserById(id || '');
     const updateUserMutation = useUpdateUser();
 
     const [formData, setFormData] = useState({
@@ -248,4 +248,3 @@ export default function EditUser() {
         </div>
     );
 }
-

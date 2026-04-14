@@ -103,8 +103,6 @@ async function refreshAccessToken(): Promise<{ data: IRefreshTokenResponse }> {
 
 const responseBody = <T>(response: { data: T }): T => response.data;
 
-let nextUserId = 4;
-
 const mockUsers: IGetAllUsersResponse = {
     users: [
         {

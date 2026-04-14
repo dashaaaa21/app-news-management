@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { IUserFormData } from '../../../common/types/user-type';
+import type {
+    IUserFormData,
+    IRegisterFormData,
+} from '../../../common/types/user-type';
 import { createUser } from '../../../api/api-user/api-user';
 import { adminPrivateRoutesVariables } from '../../../router/routesVariables/pathVariables';
 import Breadcrumbs from '../../ui/Breadcrumbs/Breadcrumbs';
@@ -24,9 +27,18 @@ export default function CreateUser() {
 
     const handleSave = async () => {
         try {
-            await createUser(formData);
-            alert('User created successfully!');
-            navigate(-1);
+            const userData: IRegisterFormData = {
+                ...formData,
+                password: 'TempPassword123!',
+                confirmPassword: 'TempPassword123!',
+            };
+            const result = await createUser(userData);
+            if (result.response) {
+                alert('User created successfully!');
+                navigate(-1);
+            } else if (result.error) {
+                alert('Error creating user: ' + result.error.message);
+            }
         } catch (error) {
             alert('Error creating user');
             console.error(error);

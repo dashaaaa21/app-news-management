@@ -5,11 +5,6 @@ import UsersTable from '../../components/sectionProfile/UsersTable';
 
 export default function AdminProfiles() {
     const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
-    const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-    const handleRefresh = () => {
-        setRefreshTrigger((prev) => prev + 1);
-    };
 
     return (
         <div className="p-8">
@@ -17,13 +12,12 @@ export default function AdminProfiles() {
                 <ProfileHeader
                     selectedUsers={selectedUsers}
                     onClearSelection={() => setSelectedUsers([])}
-                    onRefresh={handleRefresh}
+                    onRefresh={() => {}}
                 />
                 <AddNewButton />
                 <UsersTable
                     selectedUsers={selectedUsers}
                     onSelectedUsersChange={setSelectedUsers}
-                    refreshTrigger={refreshTrigger}
                 />
             </div>
         </div>

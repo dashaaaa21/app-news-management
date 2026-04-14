@@ -59,7 +59,7 @@ export interface IUseNewsReturn {
 }
 
 export interface INewsFormProps {
-    news?: INewsResponse | null;
+    news?: (INewsResponse & { image?: string }) | null;
     onSubmit: (newsData: ICreateNewsRequest) => Promise<boolean>;
     onCancel: () => void;
     isLoading: boolean;

@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import type { IUser } from '../../common/types/user-type';
-import { getUserRole } from '../../common/utils/localStorage';
 import { useDeleteUser } from '../../common/hooks/useUsersCrud';
 import { Button } from '../ui/buttons/Button';
 
@@ -24,8 +23,6 @@ export default function UserTableRow({
     showEditDelete = false,
 }: IUserTableRowProps) {
     const navigate = useNavigate();
-    const userRole = getUserRole();
-    const isAdmin = userRole === 'admin' || showEditDelete;
     const deleteUserMutation = useDeleteUser();
 
     const handleEdit = () => {

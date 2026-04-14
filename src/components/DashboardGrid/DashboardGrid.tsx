@@ -1,4 +1,3 @@
-import React from 'react';
 import TopicsNews from '../Dashboard/TopicsNews.tsx';
 import EarningsChart from '../Dashboard/Earningschart.tsx';
 import DaysNews from '../Dashboard/DaysNews.tsx';

@@ -146,7 +146,19 @@ const RegisterForm: React.FC = () => {
         setTouched({ email: true, password: true, confirmPassword: true });
 
         if (!newEmailError && !newPasswordError && !newConfirmPasswordError) {
-            const { response, error } = await register({ email, password });
+            const { response, error } = await register({
+                email,
+                password,
+                confirmPassword,
+                firstName: '',
+                lastName: '',
+                gender: 'male',
+                dateOfBirth: '',
+                position: '',
+                hireDate: '',
+                phone: '',
+                role: 'user',
+            });
 
             if (response) {
                 navigate('/login');

@@ -3,7 +3,6 @@ import type { IBaseUserData, IRegisterFormData } from '../types/user-type';
 import {
     getAllUsers,
     createUser,
-    getUserById,
     updateUserById,
     deleteUser,
 } from '../../api/api-user/api-user';
@@ -20,7 +19,7 @@ export const useGetUsers = () => {
             if (result.error) {
                 throw new Error(result.error.message);
             }
-            let users = [];
+            let users: any[] = [];
             if (Array.isArray(result.response)) {
                 users = result.response;
             } else if (result.response?.users) {
@@ -40,7 +39,7 @@ export const useGetUserById = (id: string) => {
             if (result.error) {
                 throw new Error(result.error.message);
             }
-            let users = [];
+            let users: any[] = [];
             if (Array.isArray(result.response)) {
                 users = result.response;
             } else if (result.response?.users) {
@@ -120,4 +119,3 @@ export const useDeleteUser = () => {
         },
     });
 };
-

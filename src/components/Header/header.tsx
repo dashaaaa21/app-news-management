@@ -1,8 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getProfileFromStorage } from '../../common/utils/profileStorage';
-import { getAccessToken } from '../../common/utils/localStorage';
-import { getServerUrl } from '../../common/utils/apiConfig';
 
 interface HeaderProps {
     title?: string;
