@@ -23,7 +23,6 @@ export default function CreateUser() {
 
     useEffect(() => {
         if (userRole !== 'admin') {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setError('Only administrators can create users');
             const timer = setTimeout(() => {
                 navigate('/admin/users');

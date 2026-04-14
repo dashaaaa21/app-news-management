@@ -3,7 +3,6 @@ import { authRoutesVariables } from './pathVariables';
 import AuthLayout from '../../layouts/AuthLayout/AuthLayout';
 import ForgotPassword from '../../pages/ForgotPassword/ForgotPassword';
 
-// TODO: Create separate Login and Register page components
 export const authRoutes: RouteObject[] = [
     {
         path: authRoutesVariables.login,

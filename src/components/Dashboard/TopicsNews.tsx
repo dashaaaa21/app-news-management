@@ -31,7 +31,6 @@ export default function TopicsNews({ totalOrders }: Props) {
 
     return (
         <div className="rounded-[30px] border border-[#E6E7DE] p-4 md:p-5">
-            {/* Header */}
             <div className="flex items-center gap-2 md:gap-3 mb-8 md:mb-10">
                 <img
                     src={shopImg}
@@ -48,7 +47,6 @@ export default function TopicsNews({ totalOrders }: Props) {
                 </div>
             </div>
 
-            {/* Chart */}
             <div
                 className="relative flex justify-center items-center"
                 style={{ height: '200px', minWidth: 0, minHeight: 0 }}
@@ -76,7 +74,6 @@ export default function TopicsNews({ totalOrders }: Props) {
                     </PieChart>
                 </ResponsiveContainer>
 
-                {/* Center text - absolute positioned */}
                 <div className="absolute text-center">
                     <div className="text-2xl md:text-[28px] font-semibold text-[#1F1F1F]">
                         {totalOrders}
@@ -87,7 +84,6 @@ export default function TopicsNews({ totalOrders }: Props) {
                 </div>
             </div>
 
-            {/* Legend */}
             <div className="mt-6 md:mt-8 space-y-2 md:space-y-3">
                 {topics.map((t, idx) => (
                     <div

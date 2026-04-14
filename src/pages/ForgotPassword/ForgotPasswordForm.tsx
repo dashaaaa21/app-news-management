@@ -74,7 +74,7 @@ const ForgotPasswordForm: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[#F4F7F2] w-full p-4 overflow-hidden">
+        <div className="flex items-center justify-center min-h-screen bg-background-DEFAULT w-full p-4 overflow-hidden">
             <div className="relative w-full max-w-[585px] rounded-[36px] overflow-hidden p-[4px] shadow-sm">
                 <div className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 bg-[conic-gradient(from_0deg,transparent_0_120deg,#D7FF82_180deg,transparent_180deg_300deg,#D7FF82_360deg)] animate-[spin_4s_linear_infinite]"></div>
 

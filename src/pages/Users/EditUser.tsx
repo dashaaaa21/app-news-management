@@ -26,7 +26,6 @@ export default function EditUser() {
 
     useEffect(() => {
         if (userRole !== 'admin') {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setError('Only administrators can edit users');
             const timer = setTimeout(() => {
                 navigate('/admin/users');

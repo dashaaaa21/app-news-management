@@ -128,13 +128,10 @@ export const StatTable = ({
                 </div>
             </div>
 
-            {/* Таблица */}
             <div className="w-full p-1 rounded-xl font-sans">
-                {/* Table Header */}
                 <div className="grid grid-cols-[2fr_1fr_1fr] items-center text-[#6B6B66] text-xs md:text-sm mb-2 px-2 gap-2">
                     <div className="flex items-center text-[12px] md:text-[14px] gap-1 md:gap-2 cursor-pointer hover:text-gray-800 transition-colors truncate">
                         <span>News</span>
-                        {/* Arrow icon */}
                         <svg
                             width="16"
                             height="16"
@@ -157,10 +154,8 @@ export const StatTable = ({
                     </div>
                 </div>
 
-                {/* Dashed separator */}
                 <div className="border-b border-dashed border-[#CFCFCB]"></div>
 
-                {/* Table body */}
                 <div className="flex flex-col">
                     {sortedData.map((item) => (
                         <div
@@ -170,7 +165,6 @@ export const StatTable = ({
                                     ${item.isFaded ? 'opacity-40 grayscale' : ''}
                                 `}
                         >
-                            {/* Column 1: Photo + Name */}
                             <div className="flex items-center gap-2 md:gap-4 pl-2 min-w-0">
                                 <div className="w-10 md:w-12 h-8 md:h-10 rounded-md overflow-hidden bg-orange-100 flex-shrink-0 border border-black/5">
                                     <img
@@ -184,12 +178,10 @@ export const StatTable = ({
                                 </span>
                             </div>
 
-                            {/* Column 2: Count */}
                             <div className="text-center text-[12px] md:text-[14px] text-[#1A1A1A]">
                                 {item.count}
                             </div>
 
-                            {/* Column 3: Date */}
                             <div className="text-right text-[12px] md:text-[14px] text-[#1A1A1A] pr-2">
                                 {item.date}
                             </div>

@@ -5,9 +5,7 @@ export default function NotFound() {
     return (
         <div className="flex h-screen w-full bg-linear-to-r from-[#EFF5E9] via-[#F6F5EC] to-[#F1F8F7] overflow-hidden font-sans text-[#1a1a1a]">
             <main className="flex-1 flex flex-col relative h-full">
-                {/* 404 Content */}
                 <div className="flex-1 flex flex-col items-center justify-center text-center p-4 overflow-y-auto">
-                    {/* max-w-[300px] обмежує ширину, щоб робот не був завеликим */}
                     <img
                         src={robotImg}
                         alt="Page not found robot"
@@ -26,7 +24,6 @@ export default function NotFound() {
                     <Button variant="primary">Go home</Button>
                 </div>
 
-                {/* Footer */}
                 <footer className="flex justify-between px-10 py-6 text-xs text-gray-400 mt-auto shrink-0">
                     <span>Copyright © 2025</span>
                     <div className="flex gap-6">

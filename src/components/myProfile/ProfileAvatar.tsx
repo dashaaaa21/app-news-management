@@ -53,9 +53,7 @@ const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
                     profilePicture: photoUrl,
                 });
             }
-        } catch {
-            // Ignore storage errors
-        }
+        } catch {}
     };
 
     const handleImageError = () => {

@@ -123,7 +123,6 @@ const MyProfile: React.FC = () => {
                     }
                 }
             } catch {
-                // Ignore token parsing errors
             } finally {
                 setIsLoading(false);
             }

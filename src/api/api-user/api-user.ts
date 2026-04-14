@@ -250,7 +250,6 @@ export async function getAllUsers(): Promise<
     try {
         const result = await handleApiRequest(User.getAllUsers());
         if (result.error) {
-            // Fallback to mock data if API fails
             console.warn('API failed, using mock data:', result.error);
             return new Promise((resolve) => {
                 setTimeout(() => {
@@ -280,7 +279,6 @@ export async function createUser(
     try {
         const result = await handleApiRequest(User.createUser(userData));
         if (result.error) {
-            // Fallback: create mock user
             console.warn('API failed, creating mock user:', result.error);
             const newUser: IUser = {
                 id: Math.max(...mockUsers.users.map((u) => u.id)) + 1,
@@ -311,7 +309,6 @@ export async function updateUserById(
             User.updateUserById(id, userData),
         );
         if (result.error) {
-            // Fallback: update mock user
             console.warn('API failed, updating mock user:', result.error);
             const userIndex = mockUsers.users.findIndex(
                 (u) => u.id === parseInt(id),
@@ -349,7 +346,6 @@ export async function deleteUser(
     try {
         const result = await handleApiRequest(User.deleteUser(id));
         if (result.error) {
-            // Fallback: delete mock user
             console.warn('API failed, deleting mock user:', result.error);
             const userIndex = mockUsers.users.findIndex(
                 (u) => u.id === parseInt(id),
@@ -465,9 +461,7 @@ export const uploadProfilePhoto = async (
 
                 return responseData;
             }
-        } catch {
-            // Continue to next endpoint
-        }
+        } catch {}
     }
 
     throw new Error('Upload service not available');
