@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { updateProfileService } from '../../api/api-user/api-user';
 import { getAccessToken } from '../../common/utils/localStorage';
 import type { IProfileData } from '../types/user-type';
@@ -7,6 +8,7 @@ import type { IUseUpdateProfileReturn } from '../types/hook-types';
 export const useUpdateProfile = (): IUseUpdateProfileReturn => {
     const [isUpdating, setIsUpdating] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
     const updateProfile = async (data: IProfileData): Promise<void> => {
         setIsUpdating(true);
@@ -25,6 +27,9 @@ export const useUpdateProfile = (): IUseUpdateProfileReturn => {
                 id: userId,
                 ...data,
             });
+
+            queryClient.invalidateQueries({ queryKey: ['users'] });
+            queryClient.refetchQueries({ queryKey: ['users'] });
         } catch (err) {
             const errorMessage =
                 err instanceof Error ? err.message : 'Update failed';
@@ -46,3 +51,4 @@ export const useUpdateProfile = (): IUseUpdateProfileReturn => {
         clearError,
     };
 };
+
