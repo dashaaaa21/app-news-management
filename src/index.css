@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f6ffe7;
+}
+
+#root {
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d8d8d3;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c5c5c0;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #d8d8d3 transparent;
+}
