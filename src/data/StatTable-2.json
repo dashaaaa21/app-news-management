@@ -1,0 +1,54 @@
+{
+    "title": "The best news",
+    "icon": "/src/assets/Zap.svg",
+    "data": [
+        {
+            "id": 1,
+            "title": "Driver forgot where he was going!",
+            "count": 62,
+            "date": "15.01.2024",
+            "imageUrl": "/src/assets/Meta-Emblem.png",
+            "isFaded": false
+        },
+        {
+            "id": 2,
+            "title": "Everything is the same in Rome!",
+            "count": 35,
+            "date": "20.02.2024",
+            "imageUrl": "/src/assets/dou-organization-removebg-preview.png",
+            "isFaded": false
+        },
+        {
+            "id": 3,
+            "title": "Flies and Bees! New digitalization plan announced!",
+            "count": 80,
+            "date": "10.03.2024",
+            "imageUrl": "/src/assets/channels4_profile__1_-removebg-preview.png",
+            "isFaded": false
+        },
+        {
+            "id": 4,
+            "title": "Soldier joins the army! What we know?",
+            "count": 56,
+            "date": "25.04.2024",
+            "imageUrl": "/src/assets/3b4104a1123ea259dcf6b53de60342e1.png",
+            "isFaded": false
+        },
+        {
+            "id": 5,
+            "title": "Breaking news from the capital city!",
+            "count": 92,
+            "date": "01.05.2024",
+            "imageUrl": "/src/assets/channels4_profile-removebg-preview.png",
+            "isFaded": false
+        },
+        {
+            "id": 6,
+            "title": "Technology advances in 2024!",
+            "count": 78,
+            "date": "05.05.2024",
+            "imageUrl": "/src/assets/Meta-Emblem.png",
+            "isFaded": false
+        }
+    ]
+}
