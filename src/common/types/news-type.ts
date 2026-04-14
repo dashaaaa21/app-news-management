@@ -15,12 +15,14 @@ export interface ICreateNewsRequest {
     title: string;
     body: string;
     author: string;
+    image?: File | string;
 }
 
 export interface IUpdateNewsRequest {
     title: string;
     body: string;
     author: string;
+    image?: File | string;
 }
 
 export interface INewsResponse {

@@ -419,11 +419,13 @@ export const uploadProfilePhoto = async (
     }
 
     const formData = new FormData();
-    formData.append('profilePicture', file);
+    formData.append('file', file);
 
     const endpoints = [
         `${apiBaseUrl}/uploadProfilePicture`,
         `${apiBaseUrl}/upload`,
+        `${apiBaseUrl}/uploadPhoto`,
+        `${apiBaseUrl}/uploadFile`,
     ];
 
     for (const endpoint of endpoints) {
@@ -462,13 +464,27 @@ export const updateProfileService = async (
         throw new Error('No access token found');
     }
 
+    const updateData = {
+        id: data.id,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        gender: data.gender,
+        dateOfBirth: data.dateOfBirth,
+        position: data.position,
+        hireDate: data.hireDate,
+        phone: data.phone,
+        bio: data.bio,
+        role: data.role,
+    };
+
     const response = await fetch(`${apiBaseUrl}/updateProfile`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(updateData),
     });
 
     const responseText = await response.text();

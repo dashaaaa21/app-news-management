@@ -38,8 +38,10 @@ export const usePhotoUpload = (): IUsePhotoUploadReturn => {
             return response.url.startsWith('http')
                 ? response.url
                 : getServerUrl(response.url);
-        } catch {
-            throw new Error('Upload service not available');
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'Upload failed';
+            setError(errorMessage);
+            throw err;
         } finally {
             setIsUploading(false);
         }

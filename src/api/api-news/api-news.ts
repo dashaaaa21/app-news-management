@@ -21,6 +21,9 @@ newsApiInstance.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+        if (config.data instanceof FormData) {
+            delete config.headers['Content-Type'];
+        }
         return config;
     },
     (error) => Promise.reject(error),
@@ -42,7 +45,7 @@ const mockNews: INews[] = [
         title: "A Pair in the Life of an astronaut: Humanity's Open Window to Space",
         description:
             'Astronauts recently use this technique of spacewalks to repair and maintain...',
-        image: '/src/assets/section-news/news1.png',
+        image: '/assets/section-news/news1.png',
         category: 'Space and Science',
         readTime: '5 mins read',
         body: 'Full article content here...',
@@ -53,7 +56,7 @@ const mockNews: INews[] = [
         title: 'CMA Life Event: Q and A of Earth With Astronaut Matthias Maurer',
         description:
             'Investigate the impact of space technology on everyday life...',
-        image: '/src/assets/section-news/news2.png',
+        image: '/assets/section-news/news2.png',
         category: 'Technology',
         readTime: '4 mins read',
         body: 'Full article content here...',
@@ -64,7 +67,7 @@ const mockNews: INews[] = [
         title: 'NASA to Equip International Space Station With Finnish Lasers for Communications',
         description:
             'ISS space agency NASA plans to use a technology demonstration for space lasers using this theme...',
-        image: '/src/assets/section-news/news3.png',
+        image: '/assets/section-news/news3.png',
         category: 'Space and Science',
         readTime: '6 mins read',
         body: 'Full article content here...',
@@ -75,7 +78,7 @@ const mockNews: INews[] = [
         title: 'Off-Duty Pilot Accused of Trying to Cut the Engines on an Alaska Air',
         description:
             'The flight was diverted to Portland, Ore., because of a "credible security threat" involving...',
-        image: '/src/assets/section-news/news4.png',
+        image: '/assets/section-news/news4.png',
         category: 'Technology',
         readTime: '4 mins read',
         body: 'Full article content here...',
@@ -86,7 +89,7 @@ const mockNews: INews[] = [
         title: "Sayonara: End of the Line for ASIMO, Japan's Famed Robot",
         description:
             'It was almost football-ish format: US president Barack Obama and football to...',
-        image: '/src/assets/section-news/news5.png',
+        image: '/assets/section-news/news5.png',
         category: 'Technology',
         readTime: '5 mins read',
         body: 'Full article content here...',
@@ -97,7 +100,7 @@ const mockNews: INews[] = [
         title: 'Conditions on Earth May be Moving Outside the Safe Operating',
         description:
             'Recent studies have pointed the ways in which the danger zone in several key boundaries has been...',
-        image: '/src/assets/section-news/news6.png',
+        image: '/assets/section-news/news6.png',
         category: 'Our Planet',
         readTime: '6 mins read',
         body: 'Full article content here...',
@@ -108,7 +111,7 @@ const mockNews: INews[] = [
         title: "Spain's Renfe Sets July Date for Now High-Speed Trains to France",
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-        image: '/src/assets/section-news/news7.png',
+        image: '/assets/section-news/news7.png',
         category: 'Technology',
         readTime: '4 mins read',
         body: 'Full article content here...',
@@ -119,7 +122,7 @@ const mockNews: INews[] = [
         title: 'Axiom Space inflates training for next private astronaut mission',
         description:
             'Travelers will have a new insight mission to the International Space Station...',
-        image: '/src/assets/section-news/news8.png',
+        image: '/assets/section-news/news8.png',
         category: 'Space and Science',
         readTime: '5 mins read',
         body: 'Full article content here...',
@@ -130,7 +133,7 @@ const mockNews: INews[] = [
         title: 'What Is The Importance Of Family In Modern Society?',
         description:
             'With advancements in technology, lifestyles have changed and so have the...',
-        image: '/src/assets/section-news/news9.png',
+        image: '/assets/section-news/news9.png',
         category: 'Health and Science',
         readTime: '6 mins read',
         body: 'Full article content here...',
@@ -141,7 +144,7 @@ const mockNews: INews[] = [
         title: 'Some of the Last Giant Pandas in the US are Going Back to China',
         description:
             'Some of the last giant pandas in the US are leaving next month. By the National Zoo in...',
-        image: '/src/assets/section-news/news10.png',
+        image: '/assets/section-news/news10.png',
         category: 'Our Planet',
         readTime: '4 mins read',
         body: 'Full article content here...',
@@ -152,7 +155,7 @@ const mockNews: INews[] = [
         title: 'Public Input Sought on State Forest Work Plan Update',
         description:
             'The Maryland Department of Natural Resources is inviting public comment on an operational wood...',
-        image: '/src/assets/section-news/news11.png',
+        image: '/assets/section-news/news11.png',
         category: 'Our Planet',
         readTime: '5 mins read',
         body: 'Full article content here...',
@@ -163,7 +166,7 @@ const mockNews: INews[] = [
         title: 'Public Input Sought on State Forest Work Plan Update',
         description:
             'The Maryland Department of Natural Resources is inviting public comment on an operational wood...',
-        image: '/src/assets/section-news/news12.png',
+        image: '/assets/section-news/news12.png',
         category: 'Our Planet',
         readTime: '5 mins read',
         body: 'Full article content here...',
@@ -182,34 +185,34 @@ export const MOCK_NEWS_DETAIL = {
     relatedNews: [
         {
             id: 1,
-            image: '/src/assets/section-news1-cosmos/news-cosmos2.png',
+            image: '/assets/section-news1-cosmos/news-cosmos2.png',
             title: 'New Research Ties Industrial Pollution in Joppa to Higher Rates of Asthma, Respiratory Issues',
             description: '',
         },
         {
             id: 2,
-            image: '/src/assets/section-news1-cosmos/news-cosmos3.png',
+            image: '/assets/section-news1-cosmos/news-cosmos3.png',
             title: 'Wildlife Worldwide Contaminated by Flame Retardants: New Map',
             description:
                 'Wild animals across every continent are contaminated with toxic chemicals, according to a new... Read more',
         },
         {
             id: 3,
-            image: '/src/assets/section-news1-cosmos/news-cosmos4.png',
+            image: '/assets/section-news1-cosmos/news-cosmos4.png',
             title: 'Switzerland Sets Its Sights on Combatting Greenwashing in Fina...',
             description:
                 "Switzerland's Federal Department of Finance (FDF) has launched its attempt to set tougher regulation... Read more",
         },
         {
             id: 4,
-            image: '/src/assets/section-news1-cosmos/news-cosmos5.png',
+            image: '/assets/section-news1-cosmos/news-cosmos5.png',
             title: 'For years, Japan Tried to Keep Their Existence a Secret, But the...',
             description:
                 'Engaged out of his reservation and beaten by... Read more',
         },
         {
             id: 5,
-            image: '/src/assets/section-news1-cosmos/news-cosmos6.png',
+            image: '/assets/section-news1-cosmos/news-cosmos6.png',
             title: 'Prospect of $4 Million a Year for Trash Collection Leaves New Ken...',
             description:
                 'New Kensington officials are considering whether to keep trash collection — more than four times what... Read more',
@@ -273,8 +276,17 @@ async function handleNewsApiRequest<T>(
 export const createNews = async (
     newsData: ICreateNewsRequest,
 ): Promise<IApiNewsResponse<INewsResponse>> => {
+    const formData = new FormData();
+    formData.append('title', newsData.title);
+    formData.append('body', newsData.body);
+    formData.append('author', newsData.author);
+
+    if (newsData.image instanceof File) {
+        formData.append('image', newsData.image);
+    }
+
     return handleNewsApiRequest<INewsResponse>(() =>
-        newsApiInstance.post(getApiUrl('/api/news'), newsData),
+        newsApiInstance.post(getApiUrl('/api/news'), formData),
     );
 };
 
@@ -318,8 +330,17 @@ export const updateNews = async (
     id: string,
     newsData: IUpdateNewsRequest,
 ): Promise<IApiNewsResponse<INewsResponse>> => {
+    const formData = new FormData();
+    formData.append('title', newsData.title);
+    formData.append('body', newsData.body);
+    formData.append('author', newsData.author);
+
+    if (newsData.image instanceof File) {
+        formData.append('image', newsData.image);
+    }
+
     return handleNewsApiRequest<INewsResponse>(() =>
-        newsApiInstance.put(getApiUrl(`/api/news/${id}`), newsData),
+        newsApiInstance.put(getApiUrl(`/api/news/${id}`), formData),
     );
 };
 
@@ -342,7 +363,7 @@ export const getAllNewsLegacy = async (): Promise<INews[]> => {
             author: news.author,
             date: news.date,
             description: news.body.substring(0, 100) + '...',
-            image: '/src/assets/section-news/news1.png',
+            image: '/assets/section-news/news1.png',
             category: 'General',
             readTime: '5 mins read',
         }));

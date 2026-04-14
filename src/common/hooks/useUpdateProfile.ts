@@ -21,7 +21,11 @@ export const useUpdateProfile = (): IUseUpdateProfileReturn => {
             }
 
             const payload = JSON.parse(atob(token.split('.')[1]));
-            const userId = payload.id;
+            const userId = payload.id || payload.userId || payload.sub;
+
+            if (!userId) {
+                throw new Error('User ID not found in token');
+            }
 
             await updateProfileService({
                 id: userId,
