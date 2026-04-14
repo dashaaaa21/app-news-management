@@ -10,6 +10,14 @@ interface HeaderProps {
 
 function getPageTitle(pathname: string): string {
     const segments = pathname.split('/').filter(Boolean);
+
+    if (pathname.includes('/user/edit/')) {
+        return 'Edit User';
+    }
+    if (pathname.includes('/users/create')) {
+        return 'Create User';
+    }
+
     const meaningful = segments.slice(1).filter((s) => isNaN(Number(s)));
     const last = meaningful[meaningful.length - 1] ?? '';
     return last
@@ -46,6 +54,8 @@ export default function Header({
 
     const getDashboardPath = (): string => {
         if (backPath) return backPath;
+        if (location.pathname.includes('/user/edit/')) return '/admin/users';
+        if (location.pathname.includes('/users/create')) return '/admin/users';
         if (location.pathname.startsWith('/manager'))
             return '/manager/dashboard';
         if (location.pathname.startsWith('/reporter'))

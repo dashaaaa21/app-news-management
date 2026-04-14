@@ -155,34 +155,15 @@ const User = {
         instance
             .post<{ message: string }>('/forgotPassword', { email })
             .then(responseBody),
-    getAllUsers: () => Promise.resolve(mockUsers),
-    getUserById: (id: string) => {
-        const user = mockUsers.users.find((u) => u.id === parseInt(id));
-        return user
-            ? Promise.resolve(user)
-            : Promise.reject(new Error('User not found'));
-    },
-    createUser: (user: IBaseUserData) => {
-        const newUser: IUser = {
-            id: Math.max(...mockUsers.users.map((u) => u.id), 0) + 1,
-            ...user,
-        };
-        mockUsers.users.push(newUser);
-        return Promise.resolve(newUser);
-    },
-    updateUserById: (id: string, user: IBaseUserData) => {
-        const userIndex = mockUsers.users.findIndex(
-            (u) => u.id === parseInt(id),
-        );
-        if (userIndex !== -1) {
-            mockUsers.users[userIndex] = {
-                ...mockUsers.users[userIndex],
-                ...user,
-            };
-            return Promise.resolve(mockUsers.users[userIndex]);
-        }
-        return Promise.reject(new Error('User not found'));
-    },
+    getAllUsers: () => instance.get('/getAllUsers').then(responseBody),
+    getUserById: (id: string) =>
+        instance.get(`/getUserById/${id}`).then(responseBody),
+    createUser: (user: IBaseUserData) =>
+        instance.post('/register', user).then(responseBody),
+    updateUserById: (id: string, user: IBaseUserData) =>
+        instance.put(`/updateUserById/${id}`, user).then(responseBody),
+    deleteUser: (id: string) =>
+        instance.delete(`/deleteUser/${id}`).then(responseBody),
     logout: (userId: string) =>
         instance.post<ILogoutResponse>(`/logout/${userId}`).then(responseBody),
     changePassword: (password: IUserChangePassword) =>
@@ -197,16 +178,6 @@ const User = {
         instance
             .post<IUpdateProfileResponse>('/updateUser', user)
             .then(responseBody),
-    deleteUser: (id: string) => {
-        const userIndex = mockUsers.users.findIndex(
-            (u) => u.id === parseInt(id),
-        );
-        if (userIndex !== -1) {
-            mockUsers.users.splice(userIndex, 1);
-            return Promise.resolve({ message: 'User deleted successfully' });
-        }
-        return Promise.reject(new Error('User not found'));
-    },
 };
 
 async function handleApiRequest<T>(
@@ -273,7 +244,7 @@ export async function getUserById(id: string): Promise<IApiResponse<IUser>> {
 }
 
 export async function createUser(
-    userData: IBaseUserData,
+    userData: IRegisterFormData,
 ): Promise<IApiResponse<IUser>> {
     console.log('Creating user with data:', userData);
     try {
@@ -282,7 +253,15 @@ export async function createUser(
             console.warn('API failed, creating mock user:', result.error);
             const newUser: IUser = {
                 id: Math.max(...mockUsers.users.map((u) => u.id)) + 1,
-                ...userData,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                gender: userData.gender,
+                dateOfBirth: userData.dateOfBirth,
+                position: userData.position,
+                hireDate: userData.hireDate,
+                phone: userData.phone,
+                role: userData.role,
             };
             mockUsers.users.push(newUser);
             return { response: newUser };
@@ -292,7 +271,15 @@ export async function createUser(
         console.warn('API error, creating mock user:', error);
         const newUser: IUser = {
             id: Math.max(...mockUsers.users.map((u) => u.id)) + 1,
-            ...userData,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            gender: userData.gender,
+            dateOfBirth: userData.dateOfBirth,
+            position: userData.position,
+            hireDate: userData.hireDate,
+            phone: userData.phone,
+            role: userData.role,
         };
         mockUsers.users.push(newUser);
         return { response: newUser };
@@ -547,3 +534,4 @@ export const updateProfileServiceFormData = async (
 
     return responseData;
 };
+

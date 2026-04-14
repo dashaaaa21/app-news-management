@@ -18,14 +18,14 @@ export default function EditUser() {
         position: '',
         phone: '',
         role: 'user' as 'user' | 'admin' | 'manager',
-        hireDate: '',
         gender: 'male' as 'male' | 'female' | 'other',
         dateOfBirth: '',
+        hireDate: '',
     });
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (userRole !== 'admin') {
+        if (userRole !== 'administrator') {
             setError('Only administrators can edit users');
             const timer = setTimeout(() => {
                 navigate('/admin/users');
@@ -34,18 +34,17 @@ export default function EditUser() {
         }
 
         if (user) {
-            setFormData((prev) => ({
-                ...prev,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                position: user.position,
-                phone: user.phone,
-                role: user.role as 'user' | 'admin' | 'manager',
-                hireDate: user.hireDate,
-                gender: user.gender as 'male' | 'female' | 'other',
-                dateOfBirth: user.dateOfBirth,
-            }));
+            setFormData({
+                firstName: user.firstName || '',
+                lastName: user.lastName || '',
+                email: user.email || '',
+                position: user.position || '',
+                phone: user.phone || '',
+                role: (user.role as 'user' | 'admin' | 'manager') || 'user',
+                hireDate: user.hireDate || '',
+                gender: (user.gender as 'male' | 'female' | 'other') || 'male',
+                dateOfBirth: user.dateOfBirth || '',
+            });
         }
     }, [userRole, navigate, user]);
 
@@ -77,16 +76,6 @@ export default function EditUser() {
             console.error('Error updating user:', err);
         }
     };
-
-    if (isLoading) {
-        return (
-            <div className="p-8">
-                <div className="max-w-2xl mx-auto bg-white rounded-[36px] border border-black/10 p-8">
-                    <p className="text-center">Loading...</p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="p-8">
@@ -175,6 +164,21 @@ export default function EditUser() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium mb-2">
+                                Role
+                            </label>
+                            <select
+                                name="role"
+                                value={formData.role}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                            >
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium mb-2">
                                 Gender
                             </label>
                             <select
@@ -188,6 +192,9 @@ export default function EditUser() {
                                 <option value="other">Other</option>
                             </select>
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium mb-2">
                                 Date of Birth
@@ -200,24 +207,6 @@ export default function EditUser() {
                                 required
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                             />
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium mb-2">
-                                Role
-                            </label>
-                            <select
-                                name="role"
-                                value={formData.role}
-                                onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-                            >
-                                <option value="user">User</option>
-                                <option value="admin">Admin</option>
-                                <option value="manager">Manager</option>
-                            </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-2">
@@ -259,3 +248,4 @@ export default function EditUser() {
         </div>
     );
 }
+

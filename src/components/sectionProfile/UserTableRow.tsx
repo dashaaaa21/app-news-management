@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import type { IUser } from '../../common/types/user-type';
 import { getUserRole } from '../../common/utils/localStorage';
+import { useDeleteUser } from '../../common/hooks/useUsersCrud';
 import { Button } from '../ui/buttons/Button';
 
 interface IUserTableRowProps {
@@ -9,6 +10,8 @@ interface IUserTableRowProps {
     onSelect: (userId: number) => void;
     onViewUser: (user: IUser) => void;
     isManager?: boolean;
+    onUserDeleted?: () => void;
+    showEditDelete?: boolean;
 }
 
 export default function UserTableRow({
@@ -17,13 +20,33 @@ export default function UserTableRow({
     onSelect,
     onViewUser,
     isManager = false,
+    onUserDeleted,
+    showEditDelete = false,
 }: IUserTableRowProps) {
     const navigate = useNavigate();
     const userRole = getUserRole();
-    const isAdmin = userRole === 'admin';
+    const isAdmin = userRole === 'admin' || showEditDelete;
+    const deleteUserMutation = useDeleteUser();
 
     const handleEdit = () => {
-        navigate(`/admin/user/edit/${user.id}`);
+        const userId = (user as any)._id || user.id;
+        navigate(`/admin/user/edit/${userId}`);
+    };
+
+    const handleDelete = async () => {
+        const userId = (user as any)._id || user.id;
+        if (
+            window.confirm(
+                `Are you sure you want to delete ${user.firstName} ${user.lastName}?`,
+            )
+        ) {
+            try {
+                await deleteUserMutation.mutateAsync(userId.toString());
+                onUserDeleted?.();
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
+        }
     };
 
     return (
@@ -36,7 +59,9 @@ export default function UserTableRow({
                     <input
                         type="checkbox"
                         checked={isSelected}
-                        onChange={() => onSelect(user.id)}
+                        onChange={() =>
+                            onSelect(parseInt((user as any)._id || user.id))
+                        }
                         className="w-4 h-4 cursor-pointer"
                     />
                 </td>
@@ -57,25 +82,37 @@ export default function UserTableRow({
             </td>
             <td className="px-4 py-3 text-right">
                 <div
-                    className="flex gap-2 justify-end"
+                    className="flex gap-2 justify-end flex-wrap"
                     onClick={(e) => e.stopPropagation()}
                 >
-                    {!isManager && isAdmin && (
-                        <Button
-                            onClick={handleEdit}
-                            variant="primary"
-                            className="rounded-[20px] text-base"
-                        >
-                            Edit
-                        </Button>
-                    )}
                     <Button
                         onClick={() => onViewUser(user)}
                         variant="secondary"
-                        className="rounded-[20px] text-base"
+                        className="rounded-[20px] text-sm"
                     >
                         View
                     </Button>
+                    {showEditDelete && (
+                        <>
+                            <Button
+                                onClick={handleEdit}
+                                variant="primary"
+                                className="rounded-[20px] text-sm"
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                onClick={handleDelete}
+                                variant="primary"
+                                className="rounded-[20px] text-sm bg-red-500 hover:bg-red-600"
+                                disabled={deleteUserMutation.isPending}
+                            >
+                                {deleteUserMutation.isPending
+                                    ? 'Deleting...'
+                                    : 'Delete'}
+                            </Button>
+                        </>
+                    )}
                 </div>
             </td>
         </tr>

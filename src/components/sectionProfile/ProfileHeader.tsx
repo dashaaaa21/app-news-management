@@ -18,7 +18,7 @@ export default function ProfileHeader({
 }: ProfileHeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const userRole = getUserRole();
-    const isAdmin = userRole === 'admin';
+    const isAdmin = userRole === 'administrator';
 
     const handleDelete = async () => {
         if (selectedUsers.length === 0) {

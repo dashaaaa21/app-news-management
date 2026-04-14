@@ -6,7 +6,7 @@ import { getUserRole } from '../../common/utils/localStorage';
 export default function AddNewButton() {
     const navigate = useNavigate();
     const userRole = getUserRole();
-    const isAdmin = userRole === 'admin';
+    const isAdmin = userRole === 'administrator';
 
     if (!isAdmin) {
         return null;

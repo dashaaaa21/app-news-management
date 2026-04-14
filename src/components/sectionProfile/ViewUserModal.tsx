@@ -1,12 +1,48 @@
+import { useNavigate } from 'react-router-dom';
 import type { IUser } from '../../common/types/user-type';
+import { useDeleteUser } from '../../common/hooks/useUsersCrud';
+import { getUserRole } from '../../common/utils/localStorage';
+import { Button } from '../ui/buttons/Button';
 import Cross from '../icons/Cross';
 
 interface ViewUserModalProps {
     user: IUser;
     onClose: () => void;
+    onUserDeleted?: () => void;
 }
 
-export default function ViewUserModal({ user, onClose }: ViewUserModalProps) {
+export default function ViewUserModal({
+    user,
+    onClose,
+    onUserDeleted,
+}: ViewUserModalProps) {
+    const navigate = useNavigate();
+    const userRole = getUserRole();
+    const isAdmin = userRole === 'administrator';
+    const deleteUserMutation = useDeleteUser();
+
+    const handleEdit = () => {
+        const userId = (user as any)._id || user.id;
+        navigate(`/admin/user/edit/${userId}`);
+        onClose();
+    };
+
+    const handleDelete = async () => {
+        const userId = (user as any)._id || user.id;
+        if (
+            window.confirm(
+                `Are you sure you want to delete ${user.firstName} ${user.lastName}?`,
+            )
+        ) {
+            try {
+                await deleteUserMutation.mutateAsync(userId.toString());
+                onUserDeleted?.();
+                onClose();
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
+        }
+    };
     return (
         <>
             <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
@@ -80,6 +116,37 @@ export default function ViewUserModal({ user, onClose }: ViewUserModalProps) {
                                 </p>
                             </div>
                         </div>
+                    </div>
+
+                    <div className="px-8 pb-8 flex gap-3 justify-end">
+                        {isAdmin && (
+                            <>
+                                <Button
+                                    onClick={handleEdit}
+                                    variant="primary"
+                                    className="rounded-[20px]"
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    onClick={handleDelete}
+                                    variant="primary"
+                                    className="rounded-[20px] bg-red-500 hover:bg-red-600"
+                                    disabled={deleteUserMutation.isPending}
+                                >
+                                    {deleteUserMutation.isPending
+                                        ? 'Deleting...'
+                                        : 'Delete'}
+                                </Button>
+                            </>
+                        )}
+                        <Button
+                            onClick={onClose}
+                            variant="secondary"
+                            className="rounded-[20px]"
+                        >
+                            Close
+                        </Button>
                     </div>
                 </div>
             </div>

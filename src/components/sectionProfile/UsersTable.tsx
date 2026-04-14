@@ -20,10 +20,10 @@ export default function UsersTable({
     refreshTrigger,
     isManager = false,
 }: UsersTableProps) {
-    const { data: users = [], isLoading } = useGetUsers();
+    const { data: users = [], isLoading, refetch } = useGetUsers();
     const deleteUserMutation = useDeleteUser();
     const userRole = getUserRole();
-    const isAdmin = userRole === 'admin';
+    const isAdmin = userRole === 'administrator';
     const [selectedUserForModal, setSelectedUserForModal] =
         useState<IUser | null>(null);
 
@@ -41,6 +41,10 @@ export default function UsersTable({
         } else {
             onSelectedUsersChange(users.map((user) => user.id));
         }
+    };
+
+    const handleRefresh = () => {
+        refetch();
     };
 
     if (isLoading) {
@@ -69,6 +73,8 @@ export default function UsersTable({
                                     onSelect={handleSelectUser}
                                     onViewUser={setSelectedUserForModal}
                                     isManager={isManager || !isAdmin}
+                                    onUserDeleted={handleRefresh}
+                                    showEditDelete={isAdmin}
                                 />
                             ))}
                         </tbody>
@@ -80,6 +86,7 @@ export default function UsersTable({
                 <ViewUserModal
                     user={selectedUserForModal}
                     onClose={() => setSelectedUserForModal(null)}
+                    onUserDeleted={handleRefresh}
                 />
             )}
         </>
