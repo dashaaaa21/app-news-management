@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '../ui/buttons/Button';
 import type {
     ICreateNewsRequest,
@@ -31,13 +31,6 @@ export const NewsForm: React.FC<INewsFormProps> = ({
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [photoPreview, setPhotoPreview] = useState<string>(news?.image || '');
     const [photoFile, setPhotoFile] = useState<File | null>(null);
-
-    useEffect(() => {
-        setFormData(initialFormData);
-        if (news?.image) {
-            setPhotoPreview(news.image);
-        }
-    }, [initialFormData, news]);
 
     const validateForm = (): boolean => {
         const newErrors: Record<string, string> = {};
