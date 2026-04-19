@@ -88,7 +88,8 @@ const MyProfile: React.FC = () => {
                     };
                     saveProfileToStorage(profileToSave);
                 }
-            } catch {
+            } catch (_e) {
+                void _e;
             } finally {
                 setIsLoading(false);
             }

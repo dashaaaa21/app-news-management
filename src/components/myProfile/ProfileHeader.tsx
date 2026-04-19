@@ -11,4 +11,3 @@ const ProfileHeader: React.FC = () => {
 };
 
 export default ProfileHeader;
-

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import {
     saveProfileToStorage,
     getProfileFromStorage,
@@ -10,32 +10,27 @@ const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
     onPhotoChange,
 }) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    const [imageError, setImageError] = useState(false);
+    const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
     const [isUploading, setIsUploading] = useState(false);
 
-    useEffect(() => {
-        if (currentPhoto && currentPhoto.startsWith('data:') && !previewUrl) {
-            setPreviewUrl(currentPhoto);
-        }
-    }, [currentPhoto, previewUrl]);
+    const displayPhoto =
+        uploadedPhoto ||
+        (currentPhoto?.startsWith('data:') ? currentPhoto : null);
+    const hasPhoto = Boolean(displayPhoto);
 
     const handleFileSelect = () => {
         fileInputRef.current?.click();
     };
 
-    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
         setIsUploading(true);
-
         const reader = new FileReader();
         reader.onload = (event) => {
             const result = event.target?.result as string;
-            setPreviewUrl(result);
-            setImageError(false);
-
+            setUploadedPhoto(result);
             onPhotoChange?.(result);
 
             const storedProfile = getProfileFromStorage();
@@ -46,23 +41,10 @@ const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
                 });
                 window.dispatchEvent(new Event('profileUpdated'));
             }
-
             setIsUploading(false);
         };
         reader.readAsDataURL(file);
     };
-
-    const handleImageError = () => {
-        setImageError(true);
-    };
-
-    const handleImageLoad = () => {
-        setImageError(false);
-    };
-
-    const displayPhoto = previewUrl || currentPhoto;
-    const isLocalImage = displayPhoto?.startsWith('data:');
-    const hasPhoto = displayPhoto && isLocalImage;
 
     return (
         <div className="flex flex-col items-center gap-2">
@@ -73,13 +55,9 @@ const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
                 {hasPhoto ? (
                     <div className="w-full h-full relative">
                         <img
-                            src={displayPhoto}
+                            src={displayPhoto!}
                             alt="Profile"
                             className="w-full h-full object-cover rounded-[18px] sm:rounded-[20px] lg:rounded-[22px]"
-                            onError={
-                                isLocalImage ? undefined : handleImageError
-                            }
-                            onLoad={handleImageLoad}
                         />
                         <div className="absolute top-2 right-2">
                             <button
@@ -113,12 +91,6 @@ const ProfileAvatar: React.FC<IProfileAvatarProps> = ({
                 onChange={handleFileChange}
                 className="hidden"
             />
-
-            {imageError && currentPhoto && !isLocalImage && (
-                <p className="text-red-500 text-sm text-center max-w-[200px] sm:max-w-[220px] lg:max-w-[250px] px-2">
-                    Failed to load image
-                </p>
-            )}
 
             {isUploading && (
                 <p className="text-gray-500 text-sm">Uploading...</p>

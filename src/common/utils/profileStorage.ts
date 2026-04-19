@@ -5,7 +5,9 @@ const PROFILE_STORAGE_KEY = 'userProfile';
 export const saveProfileToStorage = (profile: IProfileData): void => {
     try {
         localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
-    } catch {}
+    } catch (_e) {
+        void _e;
+    }
 };
 
 export const getProfileFromStorage = (): IProfileData | null => {
@@ -20,5 +22,7 @@ export const getProfileFromStorage = (): IProfileData | null => {
 export const clearProfileFromStorage = (): void => {
     try {
         localStorage.removeItem(PROFILE_STORAGE_KEY);
-    } catch {}
+    } catch (_e) {
+        void _e;
+    }
 };
