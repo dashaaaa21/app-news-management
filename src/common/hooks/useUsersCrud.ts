@@ -1,5 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { IBaseUserData, IRegisterFormData } from '../types/user-type';
+import type {
+    IBaseUserData,
+    IRegisterFormData,
+    IUser,
+} from '../types/user-type';
 import {
     getAllUsers,
     createUser,
@@ -15,17 +19,13 @@ export const useGetUsers = () => {
         queryKey: USERS_QUERY_KEY,
         queryFn: async () => {
             const result = await getAllUsers();
-            console.log('getAllUsers result:', result);
-            if (result.error) {
-                throw new Error(result.error.message);
-            }
-            let users: any[] = [];
+            if (result.error) throw new Error(result.error.message);
+            let users: IUser[] = [];
             if (Array.isArray(result.response)) {
-                users = result.response;
+                users = result.response as IUser[];
             } else if (result.response?.users) {
-                users = result.response.users;
+                users = result.response.users as IUser[];
             }
-            console.log('Processed users:', users);
             return users;
         },
     });
@@ -36,19 +36,19 @@ export const useGetUserById = (id: string) => {
         queryKey: USER_QUERY_KEY(id),
         queryFn: async () => {
             const result = await getAllUsers();
-            if (result.error) {
-                throw new Error(result.error.message);
-            }
-            let users: any[] = [];
+            if (result.error) throw new Error(result.error.message);
+            let users: IUser[] = [];
             if (Array.isArray(result.response)) {
-                users = result.response;
+                users = result.response as IUser[];
             } else if (result.response?.users) {
-                users = result.response.users;
+                users = result.response.users as IUser[];
             }
-            const user = users.find((u: any) => u._id === id || u.id === id);
-            if (!user) {
-                throw new Error('User not found');
-            }
+            const user = users.find(
+                (u) =>
+                    (u as IUser & { _id?: string })._id === id ||
+                    String(u.id) === id,
+            );
+            if (!user) throw new Error('User not found');
             return user;
         },
         enabled: !!id,

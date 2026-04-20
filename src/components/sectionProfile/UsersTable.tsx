@@ -64,7 +64,7 @@ export default function UsersTable({
                         <tbody>
                             {users.map((user, index) => (
                                 <UserTableRow
-                                    key={`${(user as any)._id || user.id}-${index}`}
+                                    key={`${(user as IUser & { _id?: string })._id ?? user.id}-${index}`}
                                     user={user}
                                     isSelected={selectedUsers.includes(user.id)}
                                     onSelect={handleSelectUser}

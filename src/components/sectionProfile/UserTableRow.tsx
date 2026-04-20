@@ -26,19 +26,19 @@ export default function UserTableRow({
     const deleteUserMutation = useDeleteUser();
 
     const handleEdit = () => {
-        const userId = (user as any)._id || user.id;
+        const userId = (user as IUser & { _id?: string })._id || user.id;
         navigate(`/admin/user/edit/${userId}`);
     };
 
     const handleDelete = async () => {
-        const userId = (user as any)._id || user.id;
+        const userId = (user as IUser & { _id?: string })._id || user.id;
         if (
             window.confirm(
                 `Are you sure you want to delete ${user.firstName} ${user.lastName}?`,
             )
         ) {
             try {
-                await deleteUserMutation.mutateAsync(userId.toString());
+                await deleteUserMutation.mutateAsync(String(userId));
                 onUserDeleted?.();
             } catch (error) {
                 console.error('Error deleting user:', error);
@@ -57,7 +57,14 @@ export default function UserTableRow({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() =>
-                            onSelect(parseInt((user as any)._id || user.id))
+                            onSelect(
+                                parseInt(
+                                    String(
+                                        (user as IUser & { _id?: string })
+                                            ._id ?? user.id,
+                                    ),
+                                ),
+                            )
                         }
                         className="w-4 h-4 cursor-pointer"
                     />

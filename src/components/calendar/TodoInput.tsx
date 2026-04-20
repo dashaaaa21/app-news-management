@@ -41,4 +41,3 @@ const TodoInput: React.FC<TodoInputProps> = ({ onAddTodo }) => {
 };
 
 export default TodoInput;
-

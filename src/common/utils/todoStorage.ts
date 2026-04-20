@@ -31,4 +31,3 @@ export const clearTodosFromStorage = (): void => {
         console.error('Failed to clear todos from storage');
     }
 };
-

@@ -41,4 +41,3 @@ const CalendarDay: React.FC<CalendarDayProps> = ({
 };
 
 export default CalendarDay;
-

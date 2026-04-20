@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CalendarGrid from '../../components/calendar/CalendarGrid';
 import TodoList from '../../components/calendar/TodoList';
-import { getTodosFromStorage, saveTodosToStorage } from '../../common/utils/todoStorage';
+import {
+    getTodosFromStorage,
+    saveTodosToStorage,
+} from '../../common/utils/todoStorage';
 
 interface Todo {
     id: string;
@@ -12,12 +15,7 @@ interface Todo {
 
 const Calendar: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-    const [todos, setTodos] = useState<Todo[]>([]);
-
-    useEffect(() => {
-        const storedTodos = getTodosFromStorage();
-        setTodos(storedTodos);
-    }, []);
+    const [todos, setTodos] = useState<Todo[]>(() => getTodosFromStorage());
 
     const handleAddTodo = (text: string) => {
         const dateStr = selectedDate.toISOString().split('T')[0];
@@ -52,7 +50,9 @@ const Calendar: React.FC = () => {
     return (
         <div className="p-4 sm:p-6 lg:p-8">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-2xl sm:text-3xl font-bold mb-8">My Calendar</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold mb-8">
+                    My Calendar
+                </h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
@@ -79,4 +79,3 @@ const Calendar: React.FC = () => {
 };
 
 export default Calendar;
-

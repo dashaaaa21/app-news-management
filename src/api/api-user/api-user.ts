@@ -448,7 +448,9 @@ export const uploadProfilePhoto = async (
 
                 return responseData;
             }
-        } catch {}
+        } catch (_e) {
+            void _e;
+        }
     }
 
     throw new Error('Upload service not available');

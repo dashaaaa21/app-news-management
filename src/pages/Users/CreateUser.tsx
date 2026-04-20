@@ -21,14 +21,15 @@ export default function CreateUser() {
         password: '',
         confirmPassword: '',
     });
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(
+        userRole !== 'administrator'
+            ? 'Only administrators can create users'
+            : null,
+    );
 
     useEffect(() => {
         if (userRole !== 'administrator') {
-            setError('Only administrators can create users');
-            const timer = setTimeout(() => {
-                navigate('/admin/users');
-            }, 2000);
+            const timer = setTimeout(() => navigate('/admin/users'), 2000);
             return () => clearTimeout(timer);
         }
     }, [userRole, navigate]);
@@ -258,4 +259,3 @@ export default function CreateUser() {
         </div>
     );
 }
-

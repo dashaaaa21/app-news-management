@@ -103,17 +103,17 @@ const LoginForm: React.FC = () => {
                 setRefreshToken(refreshToken);
                 setUserEmail(email);
 
-                let payload: any = null;
+                let payload: { id?: string; role?: string } | null = null;
                 try {
-                    payload = JSON.parse(atob(accessToken.split('.')[1]));
-                    if (payload.id) {
-                        setUserId(payload.id);
-                    }
-                    if (payload.role) {
-                        const role = payload.role.toLowerCase();
-                        setUserRole(role);
-                    }
-                } catch {}
+                    payload = JSON.parse(atob(accessToken.split('.')[1])) as {
+                        id?: string;
+                        role?: string;
+                    };
+                    if (payload.id) setUserId(payload.id);
+                    if (payload.role) setUserRole(payload.role.toLowerCase());
+                } catch (_e) {
+                    void _e;
+                }
 
                 if (!payload?.role) {
                     if (email === 'daryna2003tk@gmail.com') {

@@ -37,7 +37,10 @@ const TodoList: React.FC<TodoListProps> = ({
     return (
         <div className="bg-white rounded-[24px] border border-gray-200 p-6 h-fit sticky top-8">
             <h3 className="text-lg font-bold mb-2">{dateStr}</h3>
-            <TodoStats completedCount={completedCount} totalCount={todos.length} />
+            <TodoStats
+                completedCount={completedCount}
+                totalCount={todos.length}
+            />
 
             <div className="space-y-3 mb-6 max-h-96 overflow-y-auto">
                 {todos.length === 0 ? (
@@ -64,4 +67,3 @@ const TodoList: React.FC<TodoListProps> = ({
 };
 
 export default TodoList;
-

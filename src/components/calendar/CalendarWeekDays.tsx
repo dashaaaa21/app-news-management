@@ -18,4 +18,3 @@ const CalendarWeekDays: React.FC = () => {
 };
 
 export default CalendarWeekDays;
-

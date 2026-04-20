@@ -52,4 +52,3 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
 };
 
 export default CalendarHeader;
-

@@ -45,4 +45,3 @@ const TodoItem: React.FC<TodoItemProps> = ({
 };
 
 export default TodoItem;
-

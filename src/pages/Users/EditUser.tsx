@@ -22,18 +22,19 @@ export default function EditUser() {
         dateOfBirth: '',
         hireDate: '',
     });
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(
+        userRole !== 'administrator'
+            ? 'Only administrators can edit users'
+            : null,
+    );
 
     useEffect(() => {
         if (userRole !== 'administrator') {
-            setError('Only administrators can edit users');
-            const timer = setTimeout(() => {
-                navigate('/admin/users');
-            }, 2000);
+            const timer = setTimeout(() => navigate('/admin/users'), 2000);
             return () => clearTimeout(timer);
         }
-
         if (user) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData({
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',

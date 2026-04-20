@@ -52,4 +52,3 @@ export const adminPrivateRoutes: RouteObject[] = [
         element: <Calendar />,
     },
 ];
-
