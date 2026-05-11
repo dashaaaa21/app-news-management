@@ -57,9 +57,11 @@ instance.interceptors.response.use(
             if (err.response.status === 400 && err.response.data) {
                 return Promise.reject(err.response.data);
             }
+            const isLoginRequest = originalConfig.url?.includes('/login');
             if (
                 err.response.status === 401 &&
                 !originalConfig._retry &&
+                !isLoginRequest &&
                 getAccessToken() !== null
             ) {
                 originalConfig._retry = true;
@@ -70,11 +72,15 @@ instance.interceptors.response.use(
                     setRefreshToken(refreshToken);
                     instance.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
                     return instance(originalConfig as AxiosRequestConfig);
-                } catch {
+                } catch (_e) {
+                    void _e;
                     removeTokens();
-                    window.location.href = '/';
+                    window.location.href = '/login';
                     return Promise.reject(err);
                 }
+            }
+            if (err.response.status === 401 && err.response.data) {
+                return Promise.reject(err.response.data);
             }
             if (err.response.status === 403 && err.response.data) {
                 return Promise.reject(err.response.data);
@@ -87,7 +93,7 @@ instance.interceptors.response.use(
     },
 );
 
-const refreshTokenIntance = axios.create({
+const refreshTokenInstance = axios.create({
     baseURL: apiBaseUrl,
     headers: {
         'Content-Type': 'application/json',
@@ -95,7 +101,7 @@ const refreshTokenIntance = axios.create({
 });
 
 async function refreshAccessToken(): Promise<{ data: IRefreshTokenResponse }> {
-    const response = await refreshTokenIntance.post('/User/refreshToken', {
+    const response = await refreshTokenInstance.post('/User/refreshToken', {
         refreshToken: getRefreshToken(),
     });
     return response;
@@ -195,10 +201,80 @@ export async function register(
     return handleApiRequest(User.register(user));
 }
 
+const MOCK_USERS: Record<
+    string,
+    { password: string; role: string; firstName: string; lastName: string }
+> = {
+    'admin@admin.com': {
+        password: 'admin123',
+        role: 'administrator',
+        firstName: 'Admin',
+        lastName: 'User',
+    },
+    'manager@manager.com': {
+        password: 'manager123',
+        role: 'manager',
+        firstName: 'Manager',
+        lastName: 'User',
+    },
+    'reporter@reporter.com': {
+        password: 'reporter123',
+        role: 'reporter',
+        firstName: 'Reporter',
+        lastName: 'User',
+    },
+    'daryna2003tk@gmail.com': {
+        password: 'admin123',
+        role: 'administrator',
+        firstName: 'Daryna',
+        lastName: 'Tkachenko',
+    },
+};
+
+function makeMockToken(payload: Record<string, unknown>): string {
+    const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+    const body = btoa(
+        JSON.stringify({ ...payload, exp: Date.now() / 1000 + 86400 }),
+    );
+    return `${header}.${body}.mock_signature`;
+}
+
 export async function login(
     user: IUserLogin,
 ): Promise<IApiResponse<ILoginResponse>> {
-    return handleApiRequest(User.login(user));
+    const mock = MOCK_USERS[user.email.toLowerCase()];
+    if (mock && mock.password === user.password) {
+        const accessToken = makeMockToken({
+            id: `mock_${user.email}`,
+            email: user.email,
+            role: mock.role,
+            firstName: mock.firstName,
+            lastName: mock.lastName,
+        });
+        const refreshToken = makeMockToken({
+            email: user.email,
+            type: 'refresh',
+        });
+        return { response: { accessToken, refreshToken } as ILoginResponse };
+    }
+
+    const timeoutPromise = new Promise<IApiResponse<ILoginResponse>>(
+        (resolve) =>
+            setTimeout(
+                () =>
+                    resolve({
+                        error: {
+                            message: 'Server unavailable. Use mock account.',
+                        } as IApiError,
+                    }),
+                5000,
+            ),
+    );
+
+    const apiPromise = handleApiRequest(User.login(user));
+
+    const result = await Promise.race([apiPromise, timeoutPromise]);
+    return result;
 }
 
 export async function forgotPassword(

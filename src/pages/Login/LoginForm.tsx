@@ -125,9 +125,19 @@ const LoginForm: React.FC = () => {
 
                 navigate('/admin/dashboard');
             } else {
+                const rawError = error as Record<string, unknown> | undefined;
                 const errorMessage =
-                    (error?.response?.data as { message?: string })?.message ||
-                    error?.message ||
+                    (
+                        rawError?.response as
+                            | { data?: { message?: string } }
+                            | undefined
+                    )?.data?.message ||
+                    (rawError?.message as string | undefined) ||
+                    (typeof error === 'object' &&
+                    error !== null &&
+                    'message' in error
+                        ? String((error as { message: unknown }).message)
+                        : null) ||
                     'Invalid email or password';
                 setLoginError(errorMessage);
             }

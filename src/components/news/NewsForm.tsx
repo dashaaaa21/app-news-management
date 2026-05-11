@@ -30,7 +30,6 @@ export const NewsForm: React.FC<INewsFormProps> = ({
         useState<ICreateNewsRequest>(initialFormData);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [photoPreview, setPhotoPreview] = useState<string>(news?.image || '');
-    const [photoFile, setPhotoFile] = useState<File | null>(null);
 
     const validateForm = (): boolean => {
         const newErrors: Record<string, string> = {};
@@ -76,7 +75,6 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                 return;
             }
 
-            setPhotoFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPhotoPreview(reader.result as string);
@@ -99,15 +97,15 @@ export const NewsForm: React.FC<INewsFormProps> = ({
         }
 
         const dataToSubmit: ICreateNewsRequest = {
-            ...formData,
-            image: photoFile || undefined,
+            title: formData.title,
+            body: formData.body,
+            author: formData.author,
         };
 
         const success = await onSubmit(dataToSubmit);
         if (success) {
             setFormData({ title: '', body: '', author: '' });
             setPhotoPreview('');
-            setPhotoFile(null);
             setErrors({});
         }
     };
@@ -198,7 +196,6 @@ export const NewsForm: React.FC<INewsFormProps> = ({
                                     type="button"
                                     onClick={() => {
                                         setPhotoPreview('');
-                                        setPhotoFile(null);
                                     }}
                                     className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center"
                                 >
