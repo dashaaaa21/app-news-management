@@ -39,3 +39,4 @@ export class NewsService {
         if (!result) throw new NotFoundException('News not found');
     }
 }
+// updated
