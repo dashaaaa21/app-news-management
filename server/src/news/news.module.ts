@@ -13,3 +13,4 @@ import { News, NewsSchema } from './schemas/news.schema';
     exports: [NewsService],
 })
 export class NewsModule {}
+// updated
