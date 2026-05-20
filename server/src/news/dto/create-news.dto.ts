@@ -27,3 +27,4 @@ export class CreateNewsDto {
     @IsString()
     category?: string;
 }
+// updated

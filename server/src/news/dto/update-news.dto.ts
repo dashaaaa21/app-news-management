@@ -28,3 +28,4 @@ export class UpdateNewsDto {
     @IsString()
     category?: string;
 }
+// updated
