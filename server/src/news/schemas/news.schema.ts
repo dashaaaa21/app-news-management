@@ -25,3 +25,4 @@ export class News {
 }
 
 export const NewsSchema = SchemaFactory.createForClass(News);
+// updated
