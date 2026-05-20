@@ -55,3 +55,4 @@ export class RegisterDto {
     @IsEnum(['admin', 'user', 'manager'])
     role?: 'admin' | 'user' | 'manager';
 }
+// updated
