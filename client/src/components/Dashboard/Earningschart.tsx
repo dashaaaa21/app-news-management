@@ -15,7 +15,7 @@ import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
-const getPattern = (ctx: CanvasRenderingContext2D) => {
+const getPattern = (ctx: CanvasRenderingContext2D): string | CanvasPattern => {
     const canvas = document.createElement('canvas');
     canvas.width = 12;
     canvas.height = 12;
@@ -27,7 +27,8 @@ const getPattern = (ctx: CanvasRenderingContext2D) => {
     pctx.moveTo(0, 12);
     pctx.lineTo(12, 0);
     pctx.stroke();
-    return ctx.createPattern(canvas, 'repeat') || '#4b5563';
+    const pattern = ctx.createPattern(canvas, 'repeat');
+    return pattern || '#4b5563';
 };
 
 const EarningsChart: React.FC = () => {

@@ -12,8 +12,8 @@ const DaysNews = () => {
     const data = [
         { day: 'M', value: 30 },
         { day: 'T', value: 45 },
-        { day: 'T', value: 60 },
-        { day: 'W', value: 50 },
+        { day: 'W', value: 60 },
+        { day: 'Th', value: 50 },
         { day: 'F', value: 55 },
         { day: 'S', value: 65 },
     ];
