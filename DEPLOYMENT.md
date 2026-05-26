@@ -29,7 +29,13 @@
    - Select `app-news-management` repository
    - Click "Connect"
 
-3. **Configure Service**
+3. **Configure Service** (if not using render.yaml)
+   
+   **Option A: Using render.yaml (Recommended)**
+   - Render will automatically detect `render.yaml` in the root directory
+   - Just add the required environment variables in the dashboard
+   
+   **Option B: Manual Configuration**
    - **Name**: `news-backend`
    - **Region**: Frankfurt (or closest to you)
    - **Branch**: `main`
@@ -50,6 +56,8 @@
    JWT_REFRESH_SECRET=your-super-secret-refresh-key-min-32-chars
    JWT_REFRESH_EXPIRES_IN=7d
    ```
+   
+   ⚠️ **Important**: Make sure to set the **Root Directory** to `server` in the Render dashboard settings if not using render.yaml!
 
 5. **Deploy**
    - Click "Create Web Service"

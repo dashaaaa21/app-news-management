@@ -6,6 +6,7 @@ export default defineConfig({
     server: {
         port: 5173,
     },
+    // @ts-ignore - test config for vitest
     test: {
         environment: 'jsdom',
         globals: true,
