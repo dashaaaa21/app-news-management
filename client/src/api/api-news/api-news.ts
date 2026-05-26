@@ -265,9 +265,28 @@ function lsDelete(id: string) {
 export const getAllNews = async (): Promise<
     IApiNewsResponse<INewsResponse[]>
 > => {
-    const result = await handleNewsApiRequest<INewsResponse[]>(() =>
+    const timeoutPromise = new Promise<IApiNewsResponse<INewsResponse[]>>(
+        (resolve) =>
+            setTimeout(() => {
+                const localData = lsGetAll();
+                if (localData.length > 0) {
+                    resolve({ response: localData });
+                } else {
+                    resolve({
+                        error: {
+                            message:
+                                'Server unavailable. No cached data available.',
+                        },
+                    });
+                }
+            }, 5000),
+    );
+
+    const apiPromise = handleNewsApiRequest<INewsResponse[]>(() =>
         newsApiInstance.get(getApiUrl('/api/news')),
     );
+
+    const result = await Promise.race([apiPromise, timeoutPromise]);
 
     if (result.error) {
         return { response: lsGetAll() };
