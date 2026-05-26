@@ -10,6 +10,7 @@ import { NewsModule } from './news/news.module';
         ConfigModule.forRoot({
             isGlobal: true,
             envFilePath: '.env',
+            ignoreEnvFile: process.env.NODE_ENV === 'production',
         }),
         MongooseModule.forRootAsync({
             imports: [ConfigModule],
