@@ -165,13 +165,6 @@ export const StatTable = ({
                                 `}
                         >
                             <div className="flex items-center gap-2 md:gap-4 pl-2 min-w-0">
-                                <div className="w-10 md:w-12 h-8 md:h-10 rounded-md overflow-hidden bg-orange-100 flex-shrink-0 border border-black/5">
-                                    <img
-                                        src={item.imageUrl}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
                                 <span className="text-[#1A1A1A] text-[12px] md:text-[14px] font-medium tracking-tight truncate">
                                     {item.title}
                                 </span>
