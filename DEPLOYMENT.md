@@ -1,49 +1,10 @@
 # Deployment Guide
 
-## Client Deployment (Vercel)
-
-### Prerequisites
-- GitHub account connected to Vercel
-- Repository pushed to GitHub
-
-### Steps
-
-1. **Go to [Vercel](https://vercel.com)**
-   - Sign in with GitHub
-   - Click "Add New Project"
-
-2. **Import Repository**
-   - Select `app-news-management` repository
-   - Click "Import"
-
-3. **Configure Project**
-   - **Framework Preset**: Vite
-   - **Root Directory**: `client`
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-   - **Install Command**: `npm install`
-
-4. **Environment Variables**
-   Add the following environment variable:
-   ```
-   VITE_API_BASE_URL=https://your-backend-url.onrender.com
-   ```
-   (You'll get this URL after deploying the server)
-
-5. **Deploy**
-   - Click "Deploy"
-   - Wait for build to complete
-   - Your client will be live at `https://your-project.vercel.app`
-
-### Update Backend URL
-After server deployment, update `VITE_API_BASE_URL` in Vercel:
-- Go to Project Settings → Environment Variables
-- Update `VITE_API_BASE_URL` with your Render backend URL
-- Redeploy
+⚠️ **Important**: Deploy the **Server (Backend) FIRST**, then the Client (Frontend).
 
 ---
 
-## Server Deployment (Render)
+## Server Deployment (Render) - DEPLOY THIS FIRST
 
 ### Prerequisites
 - GitHub account connected to Render
@@ -104,15 +65,60 @@ After server deployment, update `VITE_API_BASE_URL` in Vercel:
 
 - **CORS**: Server is configured to accept requests from any origin. Update `server/src/main.ts` if you want to restrict to specific domains.
 
+- **Save your backend URL**: Copy the URL (e.g., `https://news-backend-xxxx.onrender.com`) - you'll need it for the client deployment.
+
+---
+
+## Client Deployment (Vercel) - DEPLOY THIS SECOND
+
+### Prerequisites
+- Backend deployed on Render (from previous step)
+- Backend URL copied
+
+### Steps
+
+1. **Go to [Vercel](https://vercel.com)**
+   - Sign in with GitHub
+   - Click "Add New Project"
+
+2. **Import Repository**
+   - Select `app-news-management` repository
+   - Click "Import"
+
+3. **Configure Project**
+   - **Framework Preset**: Vite
+   - **Root Directory**: `client`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+
+4. **Environment Variables**
+   Add the following environment variable with your Render backend URL:
+   ```
+   VITE_API_BASE_URL=https://news-backend-xxxx.onrender.com
+   ```
+   ⚠️ Replace `news-backend-xxxx.onrender.com` with your actual Render URL from the previous step.
+
+5. **Deploy**
+   - Click "Deploy"
+   - Wait for build to complete (2-3 minutes)
+   - Your client will be live at `https://your-project.vercel.app`
+
+6. **Test the Application**
+   - Visit your Vercel URL
+   - Try to login with mock credentials (see README.md)
+   - Check if API calls work properly
+
+---
+
+## Deployment Order Summary
+
+1. ✅ **First**: Deploy Server to Render → Get backend URL
+2. ✅ **Second**: Deploy Client to Vercel → Use backend URL in environment variables
+
 ---
 
 ## Post-Deployment
-
-### Update Client Environment
-1. Copy your Render backend URL
-2. Go to Vercel project settings
-3. Update `VITE_API_BASE_URL` environment variable
-4. Trigger redeploy
 
 ### Test Deployment
 1. Visit your Vercel URL
