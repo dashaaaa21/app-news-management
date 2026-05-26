@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import statTable1Data from '../../data/StatTable-1.json';
+import statTable2Data from '../../data/StatTable-2.json';
 
 export interface NewsItem {
     id: number;
@@ -22,34 +24,19 @@ export const useStatTableData = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const [response1, response2] = await Promise.all([
-                    fetch('/src/data/StatTable-1.json'),
-                    fetch('/src/data/StatTable-2.json'),
-                ]);
-
-                if (!response1.ok || !response2.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-
-                const data1 = await response1.json();
-                const data2 = await response2.json();
-
-                setTableData(data1);
-                setTableData2(data2);
-            } catch (err) {
-                setError(
-                    err instanceof Error ? err.message : 'An error occurred',
-                );
-                console.error('Error fetching table data:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
+        try {
+            setLoading(true);
+            setTableData(statTable1Data as StatTableData);
+            setTableData2(statTable2Data as StatTableData);
+            setError(null);
+        } catch (err) {
+            setError(
+                err instanceof Error ? err.message : 'An error occurred',
+            );
+            console.error('Error loading table data:', err);
+        } finally {
+            setLoading(false);
+        }
     }, []);
 
     return { tableData, tableData2, loading, error };
